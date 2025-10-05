@@ -3,23 +3,14 @@ import { Button } from '../components/Button';
 import { Container } from '../components/Container';
 import { Grid } from '../components/Grid';
 import { Responsive } from '../components/Responsive';
-import SEO from '../components/SEO.astro';
 import { Stack } from '../components/Stack';
-import '../styles/global.css';
+import Layout from '../layouts/Layout.astro';
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <SEO
-      title="Component Demo"
-      description="Responsive layout components demo using CVA and Tailwind CSS"
-    />
-  </head>
-  <body>
+<Layout
+  title="Component Demo"
+  description="Responsive layout components demo using CVA and CSS"
+>
     <Container size="lg" className="py-8">
       <Stack gap="xl">
         <header>
@@ -171,5 +162,4 @@ import '../styles/global.css';
         </section>
       </Stack>
     </Container>
-  </body>
-</html>
+</Layout>
