@@ -7,7 +7,12 @@ import { Container } from './Container';
   <Container size="lg">
     <div class="navbar__inner">
       <a href="/" class="navbar__logo">{SITE_NAME}</a>
-      <ul class="navbar__links">
+      <button class="navbar__hamburger" aria-label="Toggle menu" id="navbar-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <ul class="navbar__links" id="navbar-menu">
         <li><a href="/">Home</a></li>
         <li><a href="/about">About</a></li>
         <li><a href="/events">Events</a></li>
@@ -17,6 +22,16 @@ import { Container } from './Container';
     </div>
   </Container>
 </nav>
+
+<script>
+  const toggle = document.getElementById('navbar-toggle');
+  const menu = document.getElementById('navbar-menu');
+
+  toggle?.addEventListener('click', () => {
+    menu?.classList.toggle('navbar__links--open');
+    toggle?.classList.toggle('navbar__hamburger--open');
+  });
+</script>
 
 <style>
   .navbar {
@@ -29,6 +44,7 @@ import { Container } from './Container';
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: relative;
   }
 
   .navbar__logo {
@@ -40,6 +56,36 @@ import { Container } from './Container';
 
   .navbar__logo:hover {
     color: #2563eb;
+  }
+
+  .navbar__hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+  }
+
+  .navbar__hamburger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background-color: #111827;
+    transition: all 0.3s ease;
+  }
+
+  .navbar__hamburger--open span:nth-child(1) {
+    transform: rotate(45deg) translate(4.25px, 4.25px);
+  }
+
+  .navbar__hamburger--open span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .navbar__hamburger--open span:nth-child(3) {
+    transform: rotate(-45deg) translate(4.25px, -4.25px);
   }
 
   .navbar__links {
@@ -62,15 +108,32 @@ import { Container } from './Container';
   }
 
   @media (max-width: 640px) {
-    .navbar__inner {
-      flex-direction: column;
-      gap: 1rem;
+    .navbar__hamburger {
+      display: flex;
     }
 
     .navbar__links {
+      display: none;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background-color: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 0.375rem;
+      margin-top: 0.5rem;
+      padding: 1rem;
+      flex-direction: column;
       gap: 1rem;
-      flex-wrap: wrap;
-      justify-content: center;
+      min-width: 200px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar__links a {
+      color: #111827;
+    }
+
+    .navbar__links--open {
+      display: flex;
     }
   }
 </style>
