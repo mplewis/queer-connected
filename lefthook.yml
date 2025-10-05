@@ -2,9 +2,9 @@ pre-commit:
   parallel: true
   commands:
     lint:
-      glob: "*.{js,ts,jsx,tsx,astro,json}"
-      run: pnpm biome check --write --no-errors-on-unmatched --files-ignore-unknown=true {staged_files}
-      stage_fixed: true
+      run: pnpm biome check --write .
+    type-check:
+      run: pnpm astro check
 
 pre-push:
   commands:

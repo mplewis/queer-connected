@@ -6,7 +6,7 @@ import Hero from '../components/Hero.astro';
 import { Responsive } from '../components/Responsive';
 import { Section } from '../components/Section';
 import { Stack } from '../components/Stack';
-import { H1, H2, H3, P } from '../components/Typography';
+import { H1, H2, P } from '../components/Typography';
 import Layout from '../layouts/Layout.astro';
 ---
 
@@ -21,16 +21,16 @@ import Layout from '../layouts/Layout.astro';
     <Container size="lg" className="py-8">
       <Stack gap="sm">
         <section>
-          <h2 class="text-2xl font-semibold text-gray-900 mb-4">Container Sizes</h2>
+          <H1 client:load className="mb-4">Container Sizes</H1>
           <Stack gap="md">
             <div class="bg-blue-100 p-4 rounded">
-              <p class="text-sm text-gray-700">Current: Large container (max-w-screen-lg)</p>
+              <P client:load className="text-gray-700">Current: Large container (max-w-screen-lg)</P>
             </div>
           </Stack>
         </section>
 
         <section>
-          <h2 class="text-2xl font-semibold text-gray-900 mb-4">Button Variants</h2>
+          <H1 client:load className="mb-4">Button Variants</H1>
           <Stack direction="responsive" gap="md" align="center" wrap="wrap">
             <Button variant="primary" size="sm" client:load>Primary Small</Button>
             <Button variant="secondary" size="md" client:load>Secondary Medium</Button>
@@ -40,42 +40,42 @@ import Layout from '../layouts/Layout.astro';
         </section>
 
         <section>
-          <h2 class="text-2xl font-semibold text-gray-900 mb-4">Responsive Grid</h2>
+          <H1 client:load className="mb-4">Responsive Grid</H1>
           <Grid cols={3} gap="md">
             <div class="bg-white p-6 rounded-lg shadow">
-              <h3 class="font-semibold text-lg mb-2">Card 1</h3>
-              <p class="text-gray-600">
+              <H2 client:load className="mb-2">Card 1</H2>
+              <P client:load className="text-gray-600">
                 This grid adapts: 1 column on mobile, 2 on small screens, 3 on large screens.
-              </p>
+              </P>
             </div>
             <div class="bg-white p-6 rounded-lg shadow">
-              <h3 class="font-semibold text-lg mb-2">Card 2</h3>
-              <p class="text-gray-600">Resize your browser to see the responsive behavior.</p>
+              <H2 client:load className="mb-2">Card 2</H2>
+              <P client:load className="text-gray-600">Resize your browser to see the responsive behavior.</P>
             </div>
             <div class="bg-white p-6 rounded-lg shadow">
-              <h3 class="font-semibold text-lg mb-2">Card 3</h3>
-              <p class="text-gray-600">Built with CVA for type-safe variant props.</p>
+              <H2 client:load className="mb-2">Card 3</H2>
+              <P client:load className="text-gray-600">Built with CVA for type-safe variant props.</P>
             </div>
             <div class="bg-white p-6 rounded-lg shadow">
-              <h3 class="font-semibold text-lg mb-2">Card 4</h3>
-              <p class="text-gray-600">Fully customizable with className prop.</p>
+              <H2 client:load className="mb-2">Card 4</H2>
+              <P client:load className="text-gray-600">Fully customizable with className prop.</P>
             </div>
             <div class="bg-white p-6 rounded-lg shadow">
-              <h3 class="font-semibold text-lg mb-2">Card 5</h3>
-              <p class="text-gray-600">Consistent spacing using gap variants.</p>
+              <H2 client:load className="mb-2">Card 5</H2>
+              <P client:load className="text-gray-600">Consistent spacing using gap variants.</P>
             </div>
             <div class="bg-white p-6 rounded-lg shadow">
-              <h3 class="font-semibold text-lg mb-2">Card 6</h3>
-              <p class="text-gray-600">Perfect for dashboards and galleries.</p>
+              <H2 client:load className="mb-2">Card 6</H2>
+              <P client:load className="text-gray-600">Perfect for dashboards and galleries.</P>
             </div>
           </Grid>
         </section>
 
         <section>
-          <h2 class="text-2xl font-semibold text-gray-900 mb-4">Stack Layouts</h2>
+          <H1 client:load className="mb-4">Stack Layouts</H1>
           <Stack gap="lg">
             <div class="bg-white p-4 rounded-lg shadow">
-              <p class="font-medium mb-2">Vertical Stack (default)</p>
+              <P client:load className="mb-2">Vertical Stack (default)</P>
               <Stack gap="sm">
                 <div class="bg-purple-100 p-3 rounded">Item 1</div>
                 <div class="bg-purple-100 p-3 rounded">Item 2</div>
@@ -84,7 +84,7 @@ import Layout from '../layouts/Layout.astro';
             </div>
 
             <div class="bg-white p-4 rounded-lg shadow">
-              <p class="font-medium mb-2">Horizontal Stack</p>
+              <P client:load className="mb-2">Horizontal Stack</P>
               <Stack direction="row" gap="md" wrap="wrap">
                 <div class="bg-green-100 p-3 rounded">Item 1</div>
                 <div class="bg-green-100 p-3 rounded">Item 2</div>
@@ -94,7 +94,7 @@ import Layout from '../layouts/Layout.astro';
             </div>
 
             <div class="bg-white p-4 rounded-lg shadow">
-              <p class="font-medium mb-2">Responsive Stack (column → row)</p>
+              <P client:load className="mb-2">Responsive Stack (column → row)</P>
               <Stack direction="responsive" gap="md">
                 <div class="bg-orange-100 p-3 rounded flex-1">Stacks vertically on mobile</div>
                 <div class="bg-orange-100 p-3 rounded flex-1">Horizontal on larger screens</div>
@@ -104,7 +104,7 @@ import Layout from '../layouts/Layout.astro';
         </section>
 
         <section>
-          <h2 class="text-2xl font-semibold text-gray-900 mb-4">Responsive Visibility</h2>
+          <H1 client:load className="mb-4">Responsive Visibility</H1>
           <Stack gap="md">
             <Responsive show="mobile" client:load>
               <div class="bg-red-100 p-4 rounded text-red-900">
@@ -125,13 +125,13 @@ import Layout from '../layouts/Layout.astro';
         </section>
 
         <section>
-          <h2 class="text-2xl font-semibold text-gray-900 mb-4">Complex Layout Example</h2>
+          <H1 client:load className="mb-4">Complex Layout Example</H1>
           <div class="bg-white p-6 rounded-lg shadow">
             <Stack gap="lg">
               <Stack direction="responsive" justify="between" align="center">
                 <div>
-                  <h3 class="text-xl font-semibold">Dashboard Header</h3>
-                  <p class="text-gray-600">Combining multiple layout components</p>
+                  <H2 client:load>Dashboard Header</H2>
+                  <P client:load className="text-gray-600">Combining multiple layout components</P>
                 </div>
                 <Stack direction="row" gap="sm">
                   <Button variant="secondary" size="sm" client:load>Settings</Button>
@@ -141,20 +141,20 @@ import Layout from '../layouts/Layout.astro';
 
               <Grid cols={4} gap="md">
                 <div class="bg-gradient-to-br from-purple-500 to-purple-600 p-4 rounded text-white">
-                  <p class="text-sm opacity-90">Total Users</p>
-                  <p class="text-3xl font-bold mt-1">1,234</p>
+                  <P client:load className="opacity-90">Total Users</P>
+                  <P client:load className="mt-1">1,234</P>
                 </div>
                 <div class="bg-gradient-to-br from-blue-500 to-blue-600 p-4 rounded text-white">
-                  <p class="text-sm opacity-90">Revenue</p>
-                  <p class="text-3xl font-bold mt-1">$12.5k</p>
+                  <P client:load className="opacity-90">Revenue</P>
+                  <P client:load className="mt-1">$12.5k</P>
                 </div>
                 <div class="bg-gradient-to-br from-green-500 to-green-600 p-4 rounded text-white">
-                  <p class="text-sm opacity-90">Active</p>
-                  <p class="text-3xl font-bold mt-1">892</p>
+                  <P client:load className="opacity-90">Active</P>
+                  <P client:load className="mt-1">892</P>
                 </div>
                 <div class="bg-gradient-to-br from-orange-500 to-orange-600 p-4 rounded text-white">
-                  <p class="text-sm opacity-90">Growth</p>
-                  <p class="text-3xl font-bold mt-1">+23%</p>
+                  <P client:load className="opacity-90">Growth</P>
+                  <P client:load className="mt-1">+23%</P>
                 </div>
               </Grid>
             </Stack>
