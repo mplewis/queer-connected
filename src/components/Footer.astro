@@ -1,4 +1,5 @@
 ---
+import { SITE_NAME } from '../constants';
 import { Container } from './Container';
 ---
 
@@ -6,7 +7,7 @@ import { Container } from './Container';
   <Container size="lg">
     <div class="footer__inner">
       <div class="footer__section">
-        <h3>Queer Connected</h3>
+        <h3>{SITE_NAME}</h3>
         <p>Building community connections and support.</p>
       </div>
       <div class="footer__section">
@@ -27,7 +28,7 @@ import { Container } from './Container';
       </div>
     </div>
     <div class="footer__bottom">
-      <p>&copy; {new Date().getFullYear()} Queer Connected. All rights reserved.</p>
+      <p>&copy; {new Date().getFullYear()} {SITE_NAME}. All rights reserved.</p>
     </div>
   </Container>
 </footer>

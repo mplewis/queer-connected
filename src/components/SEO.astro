@@ -1,4 +1,6 @@
 ---
+import { SITE_NAME } from '../constants';
+
 export interface Props {
   title: string;
   description: string;
@@ -15,8 +17,7 @@ const {
   type = 'website',
 } = Astro.props;
 
-const siteName = 'Queer Connected';
-const fullTitle = `${title} | ${siteName}`;
+const fullTitle = `${title} | ${SITE_NAME}`;
 ---
 
 <!-- Primary Meta Tags -->
@@ -30,7 +31,7 @@ const fullTitle = `${title} | ${siteName}`;
 <meta property="og:title" content={fullTitle} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={image} />
-<meta property="og:site_name" content={siteName} />
+<meta property="og:site_name" content={SITE_NAME} />
 
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image" />

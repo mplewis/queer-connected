@@ -1,11 +1,12 @@
 ---
+import { SITE_NAME } from '../constants';
 import { Container } from './Container';
 ---
 
 <nav class="navbar">
   <Container size="lg">
     <div class="navbar__inner">
-      <a href="/" class="navbar__logo">Queer Connected</a>
+      <a href="/" class="navbar__logo">{SITE_NAME}</a>
       <ul class="navbar__links">
         <li><a href="/">Home</a></li>
         <li><a href="/about">About</a></li>
