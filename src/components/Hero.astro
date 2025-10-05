@@ -1,0 +1,93 @@
+---
+import { Button } from './Button';
+import { Container } from './Container';
+import { Section } from './Section';
+
+interface Props {
+  title: string;
+  subtitle: string;
+  description: string;
+}
+
+const { title, subtitle, description } = Astro.props;
+---
+
+<Section spacing="none" paddingY="xl" className="hero">
+  <Container size="lg">
+    <div class="hero__content">
+      <h1 class="hero__title">{title}</h1>
+      <p class="hero__text">{subtitle}</p>
+      <p class="hero__text">{description}</p>
+      <div class="hero__actions">
+        <Button variant="primary" size="lg" client:load>Get Involved</Button>
+        <Button variant="secondary" size="lg" client:load>Learn More</Button>
+      </div>
+    </div>
+  </Container>
+</Section>
+
+<style>
+  .hero {
+    background: white;
+    color: #111827;
+  }
+
+  .hero__content {
+    max-width: 800px;
+  }
+
+  .hero__title {
+    font-size: 3.5rem;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(
+      90deg,
+      #ff0080,
+      #ff8c00,
+      #ffed00,
+      #00ff00,
+      #0080ff,
+      #8000ff,
+      #ff0080
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: rainbow 8s linear infinite;
+  }
+
+  @keyframes rainbow {
+    0% {
+      background-position: 0% 50%;
+    }
+    100% {
+      background-position: 200% 50%;
+    }
+  }
+
+  .hero__text {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    line-height: 1.6;
+  }
+
+  .hero__text:last-of-type {
+    margin-bottom: 2rem;
+  }
+
+  .hero__actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: 640px) {
+    .hero__title {
+      font-size: 2.5rem;
+    }
+
+    .hero__text {
+      font-size: 1.125rem;
+    }
+  }
+</style>

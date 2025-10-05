@@ -2,25 +2,20 @@
 import { Button } from '../components/Button';
 import { Container } from '../components/Container';
 import { Grid } from '../components/Grid';
+import Hero from '../components/Hero.astro';
 import { Responsive } from '../components/Responsive';
 import { Section } from '../components/Section';
 import { Stack } from '../components/Stack';
+import { H1, H2, H3, P } from '../components/Typography';
 import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout title="Home" description="Building community connections and support">
-  <Section spacing="none" paddingY="xl" className="hero">
-    <Container size="lg">
-      <div class="hero__content">
-        <h1>Queer & Connected</h1>
-        <p>Building community connections and support</p>
-        <div class="hero__actions">
-          <Button variant="primary" size="lg" client:load>Get Involved</Button>
-          <Button variant="secondary" size="lg" client:load>Learn More</Button>
-        </div>
-      </div>
-    </Container>
-  </Section>
+  <Hero
+    title="Queer & Connected"
+    subtitle="Building community connections and support for LGBTQ+ individuals."
+    description="We create safe spaces where everyone can be their authentic selves. Join us in celebrating diversity and fostering meaningful relationships."
+  />
 
   <Section paddingY="none">
     <Container size="lg" className="py-8">
@@ -169,45 +164,3 @@ import Layout from '../layouts/Layout.astro';
     </Container>
   </Section>
 </Layout>
-
-<style>
-  .hero {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-  }
-
-  .hero__content {
-    text-align: center;
-    max-width: 800px;
-    margin: 0 auto;
-  }
-
-  .hero__content h1 {
-    font-size: 3.5rem;
-    margin-bottom: 1rem;
-    color: white;
-  }
-
-  .hero__content p {
-    font-size: 1.5rem;
-    margin-bottom: 2rem;
-    opacity: 0.95;
-  }
-
-  .hero__actions {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-
-  @media (max-width: 640px) {
-    .hero__content h1 {
-      font-size: 2.5rem;
-    }
-
-    .hero__content p {
-      font-size: 1.25rem;
-    }
-  }
-</style>
