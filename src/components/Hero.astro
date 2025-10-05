@@ -38,22 +38,20 @@ const { title, subtitle, description } = Astro.props;
 
   .hero__title {
     font-size: 3.5rem;
+    font-weight: 700;
     margin-bottom: 1.5rem;
     background: linear-gradient(
-      90deg,
-      #ff0080,
-      #ff8c00,
-      #ffed00,
-      #00ff00,
-      #0080ff,
-      #8000ff,
-      #ff0080
+      45deg,
+      oklch(50% 0.25 240),
+      oklch(55% 0.25 280),
+      oklch(65% 0.25 320),
+      oklch(55% 0.25 280)
     );
     background-size: 200% 100%;
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    animation: rainbow 8s linear infinite;
+    animation: rainbow 16s linear infinite;
   }
 
   @keyframes rainbow {
