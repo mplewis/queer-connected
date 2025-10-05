@@ -1,0 +1,81 @@
+.section {
+  display: block;
+}
+
+/* Margin spacing (vertical) */
+.section--spacing-none {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.section--spacing-sm {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.section--spacing-md {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.section--spacing-lg {
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}
+
+.section--spacing-xl {
+  margin-top: 4rem;
+  margin-bottom: 4rem;
+}
+
+/* Padding Y */
+.section--py-none {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.section--py-sm {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.section--py-md {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.section--py-lg {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+.section--py-xl {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+/* Padding X */
+.section--px-none {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.section--px-sm {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.section--px-md {
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+.section--px-lg {
+  padding-left: 3rem;
+  padding-right: 3rem;
+}
+
+.section--px-xl {
+  padding-left: 4rem;
+  padding-right: 4rem;
+}
