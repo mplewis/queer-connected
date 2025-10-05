@@ -1,0 +1,45 @@
+.typ {
+  margin: 0;
+  font-family: inherit;
+}
+
+/* Variants */
+.typ--p {
+  font-size: 1rem;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+.typ--h1 {
+  font-size: 2.25rem;
+  line-height: 1.2;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.typ--h2 {
+  font-size: 1.875rem;
+  line-height: 1.3;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.typ--h3 {
+  font-size: 1.5rem;
+  line-height: 1.4;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+/* Colors */
+.typ--color-default {
+  color: #111827;
+}
+
+.typ--color-muted {
+  color: #6b7280;
+}
+
+.typ--color-primary {
+  color: #2563eb;
+}

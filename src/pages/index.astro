@@ -1,16 +1,175 @@
 ---
-
+import { Button } from '../components/Button';
+import { Container } from '../components/Container';
+import { Grid } from '../components/Grid';
+import { Responsive } from '../components/Responsive';
+import SEO from '../components/SEO.astro';
+import { Stack } from '../components/Stack';
+import '../styles/global.css';
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <SEO
+      title="Component Demo"
+      description="Responsive layout components demo using CVA and Tailwind CSS"
+    />
+  </head>
+  <body>
+    <Container size="lg" className="py-8">
+      <Stack gap="xl">
+        <header>
+          <h1 class="text-4xl font-bold text-gray-900">Responsive Layout Demo</h1>
+          <p class="mt-2 text-lg text-gray-600">
+            Component library using CVA and Tailwind CSS
+          </p>
+        </header>
+
+        <section>
+          <h2 class="text-2xl font-semibold text-gray-900 mb-4">Container Sizes</h2>
+          <Stack gap="md">
+            <div class="bg-blue-100 p-4 rounded">
+              <p class="text-sm text-gray-700">Current: Large container (max-w-screen-lg)</p>
+            </div>
+          </Stack>
+        </section>
+
+        <section>
+          <h2 class="text-2xl font-semibold text-gray-900 mb-4">Button Variants</h2>
+          <Stack direction="responsive" gap="md" align="center" wrap="wrap">
+            <Button variant="primary" size="sm" client:load>Primary Small</Button>
+            <Button variant="secondary" size="md" client:load>Secondary Medium</Button>
+            <Button variant="danger" size="lg" client:load>Danger Large</Button>
+            <Button variant="ghost" client:load>Ghost Default</Button>
+          </Stack>
+        </section>
+
+        <section>
+          <h2 class="text-2xl font-semibold text-gray-900 mb-4">Responsive Grid</h2>
+          <Grid cols={3} gap="md">
+            <div class="bg-white p-6 rounded-lg shadow">
+              <h3 class="font-semibold text-lg mb-2">Card 1</h3>
+              <p class="text-gray-600">
+                This grid adapts: 1 column on mobile, 2 on small screens, 3 on large screens.
+              </p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow">
+              <h3 class="font-semibold text-lg mb-2">Card 2</h3>
+              <p class="text-gray-600">Resize your browser to see the responsive behavior.</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow">
+              <h3 class="font-semibold text-lg mb-2">Card 3</h3>
+              <p class="text-gray-600">Built with CVA for type-safe variant props.</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow">
+              <h3 class="font-semibold text-lg mb-2">Card 4</h3>
+              <p class="text-gray-600">Fully customizable with className prop.</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow">
+              <h3 class="font-semibold text-lg mb-2">Card 5</h3>
+              <p class="text-gray-600">Consistent spacing using gap variants.</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow">
+              <h3 class="font-semibold text-lg mb-2">Card 6</h3>
+              <p class="text-gray-600">Perfect for dashboards and galleries.</p>
+            </div>
+          </Grid>
+        </section>
+
+        <section>
+          <h2 class="text-2xl font-semibold text-gray-900 mb-4">Stack Layouts</h2>
+          <Stack gap="lg">
+            <div class="bg-white p-4 rounded-lg shadow">
+              <p class="font-medium mb-2">Vertical Stack (default)</p>
+              <Stack gap="sm">
+                <div class="bg-purple-100 p-3 rounded">Item 1</div>
+                <div class="bg-purple-100 p-3 rounded">Item 2</div>
+                <div class="bg-purple-100 p-3 rounded">Item 3</div>
+              </Stack>
+            </div>
+
+            <div class="bg-white p-4 rounded-lg shadow">
+              <p class="font-medium mb-2">Horizontal Stack</p>
+              <Stack direction="row" gap="md" wrap="wrap">
+                <div class="bg-green-100 p-3 rounded">Item 1</div>
+                <div class="bg-green-100 p-3 rounded">Item 2</div>
+                <div class="bg-green-100 p-3 rounded">Item 3</div>
+                <div class="bg-green-100 p-3 rounded">Item 4</div>
+              </Stack>
+            </div>
+
+            <div class="bg-white p-4 rounded-lg shadow">
+              <p class="font-medium mb-2">Responsive Stack (column → row)</p>
+              <Stack direction="responsive" gap="md">
+                <div class="bg-orange-100 p-3 rounded flex-1">Stacks vertically on mobile</div>
+                <div class="bg-orange-100 p-3 rounded flex-1">Horizontal on larger screens</div>
+              </Stack>
+            </div>
+          </Stack>
+        </section>
+
+        <section>
+          <h2 class="text-2xl font-semibold text-gray-900 mb-4">Responsive Visibility</h2>
+          <Stack gap="md">
+            <Responsive show="mobile" client:load>
+              <div class="bg-red-100 p-4 rounded text-red-900">
+                📱 Mobile only: Visible only on mobile screens
+              </div>
+            </Responsive>
+            <Responsive hide="mobile" client:load>
+              <div class="bg-blue-100 p-4 rounded text-blue-900">
+                💻 Hidden on mobile: Visible on sm screens and up
+              </div>
+            </Responsive>
+            <Responsive hide="md" client:load>
+              <div class="bg-green-100 p-4 rounded text-green-900">
+                📊 Hidden on md+: Visible only on mobile and small screens
+              </div>
+            </Responsive>
+          </Stack>
+        </section>
+
+        <section>
+          <h2 class="text-2xl font-semibold text-gray-900 mb-4">Complex Layout Example</h2>
+          <div class="bg-white p-6 rounded-lg shadow">
+            <Stack gap="lg">
+              <Stack direction="responsive" justify="between" align="center">
+                <div>
+                  <h3 class="text-xl font-semibold">Dashboard Header</h3>
+                  <p class="text-gray-600">Combining multiple layout components</p>
+                </div>
+                <Stack direction="row" gap="sm">
+                  <Button variant="secondary" size="sm" client:load>Settings</Button>
+                  <Button variant="primary" size="sm" client:load>Create</Button>
+                </Stack>
+              </Stack>
+
+              <Grid cols={4} gap="md">
+                <div class="bg-gradient-to-br from-purple-500 to-purple-600 p-4 rounded text-white">
+                  <p class="text-sm opacity-90">Total Users</p>
+                  <p class="text-3xl font-bold mt-1">1,234</p>
+                </div>
+                <div class="bg-gradient-to-br from-blue-500 to-blue-600 p-4 rounded text-white">
+                  <p class="text-sm opacity-90">Revenue</p>
+                  <p class="text-3xl font-bold mt-1">$12.5k</p>
+                </div>
+                <div class="bg-gradient-to-br from-green-500 to-green-600 p-4 rounded text-white">
+                  <p class="text-sm opacity-90">Active</p>
+                  <p class="text-3xl font-bold mt-1">892</p>
+                </div>
+                <div class="bg-gradient-to-br from-orange-500 to-orange-600 p-4 rounded text-white">
+                  <p class="text-sm opacity-90">Growth</p>
+                  <p class="text-3xl font-bold mt-1">+23%</p>
+                </div>
+              </Grid>
+            </Stack>
+          </div>
+        </section>
+      </Stack>
+    </Container>
+  </body>
 </html>
