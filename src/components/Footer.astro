@@ -1,0 +1,96 @@
+---
+import { Container } from './Container';
+---
+
+<footer class="footer">
+  <Container size="lg">
+    <div class="footer__inner">
+      <div class="footer__section">
+        <h3>Queer Connected</h3>
+        <p>Building community connections and support.</p>
+      </div>
+      <div class="footer__section">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="/about">About</a></li>
+          <li><a href="/events">Events</a></li>
+          <li><a href="/resources">Resources</a></li>
+        </ul>
+      </div>
+      <div class="footer__section">
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="/contact">Contact</a></li>
+          <li><a href="/privacy">Privacy</a></li>
+          <li><a href="/terms">Terms</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p>&copy; {new Date().getFullYear()} Queer Connected. All rights reserved.</p>
+    </div>
+  </Container>
+</footer>
+
+<style>
+  .footer {
+    background-color: #111827;
+    color: #f9fafb;
+    padding: 3rem 0 1rem;
+    margin-top: 4rem;
+  }
+
+  .footer__inner {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .footer__section h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .footer__section h4 {
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .footer__section p {
+    color: #9ca3af;
+    margin: 0;
+  }
+
+  .footer__section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .footer__section li {
+    margin-bottom: 0.5rem;
+  }
+
+  .footer__section a {
+    color: #9ca3af;
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .footer__section a:hover {
+    color: #f9fafb;
+  }
+
+  .footer__bottom {
+    border-top: 1px solid #374151;
+    padding-top: 1.5rem;
+    text-align: center;
+  }
+
+  .footer__bottom p {
+    color: #6b7280;
+    margin: 0;
+    font-size: 0.875rem;
+  }
+</style>
