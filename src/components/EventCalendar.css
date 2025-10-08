@@ -68,6 +68,7 @@
 .event-calendar__day:disabled {
   cursor: not-allowed;
   opacity: 0.3;
+  color: #d1d5db;
 }
 
 .event-calendar__day--other-month {
@@ -86,6 +87,10 @@
 .event-calendar__day--today {
   font-weight: 700;
   border: 2px solid #8b5cf6;
+}
+
+.event-calendar__day--today:hover:not(:disabled) {
+  border-color: #9d6ff7;
 }
 
 .event-calendar__day--has-events::after {
