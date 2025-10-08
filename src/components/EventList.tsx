@@ -42,6 +42,7 @@ function findTargetDate(
 export function EventList({ events }: EventListProps): React.JSX.Element {
   const selectedDate = useAtomValue(selectedDateAtom);
   const listRef = useRef<HTMLDivElement>(null);
+  const hasScrolledRef = useRef(false);
   const selectedDateKey = dayjs(selectedDate).format('YYYY-MM-DD');
 
   const eventsByDate = events.reduce(
@@ -59,6 +60,12 @@ export function EventList({ events }: EventListProps): React.JSX.Element {
   const sortedDates = Object.keys(eventsByDate).sort();
 
   useEffect(() => {
+    // Skip scrolling on initial load
+    if (!hasScrolledRef.current) {
+      hasScrolledRef.current = true;
+      return;
+    }
+
     const targetDateKey = findTargetDate(selectedDateKey, sortedDates, eventsByDate);
     if (targetDateKey) {
       const element = document.getElementById(`date-${targetDateKey}`);
