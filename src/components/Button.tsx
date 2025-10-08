@@ -1,4 +1,4 @@
-import { cva, type VariantProps } from 'class-variance-authority';
+import { cva } from 'class-variance-authority';
 import { clsx } from 'clsx';
 import type React from 'react';
 import type { ButtonHTMLAttributes } from 'react';
@@ -9,13 +9,15 @@ const buttonVariants = cva('button', {
     variant: {
       primary: 'button--primary',
       secondary: 'button--secondary',
-      danger: 'button--danger',
       ghost: 'button--ghost',
     },
     size: {
       sm: 'button--sm',
       md: 'button--md',
       lg: 'button--lg',
+    },
+    iconPrefix: {
+      true: 'button--icon-prefix',
     },
   },
   defaultVariants: {
@@ -24,10 +26,28 @@ const buttonVariants = cva('button', {
   },
 });
 
-export interface ButtonProps
-  extends ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {}
+export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
+  variant?: 'primary' | 'secondary' | 'ghost';
+  size?: 'sm' | 'md' | 'lg';
+  iconPrefix?: string;
+  children?: React.ReactNode;
+}
 
-export function Button({ className, variant, size, ...props }: ButtonProps): React.JSX.Element {
-  return <button className={clsx(buttonVariants({ variant, size }), className)} {...props} />;
+export function Button({
+  className,
+  variant,
+  size,
+  iconPrefix,
+  children,
+  ...props
+}: ButtonProps): React.JSX.Element {
+  return (
+    <button
+      className={clsx(buttonVariants({ variant, size, iconPrefix: !!iconPrefix }), className)}
+      {...props}
+    >
+      {iconPrefix && <span className="button__icon-prefix">{iconPrefix}</span>}
+      {children}
+    </button>
+  );
 }

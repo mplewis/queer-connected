@@ -39,22 +39,20 @@
   background-color: #d1d5db;
 }
 
-.button--danger {
-  background-color: #dc2626;
-  color: white;
-}
-
-.button--danger:hover {
-  background-color: #b91c1c;
-}
-
 .button--ghost {
   background-color: transparent;
   color: #111827;
+  border: 1px solid #d1d5db;
 }
 
 .button--ghost:hover {
   background-color: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+/* Icon prefix */
+.button__icon-prefix {
+  margin-right: 0.5rem;
 }
 
 /* Sizes */
