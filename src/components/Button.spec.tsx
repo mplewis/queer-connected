@@ -109,7 +109,17 @@ describe('Button', () => {
     expect(link.querySelector('.button__icon-prefix')).toBeInTheDocument();
   });
 
-  // TODO: it('renders link with icon prefix', () => {...})
+  it('renders link with icon prefix', () => {
+    render(
+      <Button href="https://example.com" prefix={{ icon: 'cib:google' }}>
+        Link with Icon
+      </Button>
+    );
+    const link = screen.getByRole('link');
+    expect(link).toHaveTextContent('Link with Icon');
+    const iconPrefix = link.querySelector('.button__icon-prefix');
+    expect(iconPrefix).toBeInTheDocument();
+  });
 
   it('passes through anchor props when href is provided', () => {
     render(
