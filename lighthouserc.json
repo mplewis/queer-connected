@@ -1,8 +1,7 @@
 {
   "ci": {
     "collect": {
-      "startServerCommand": "pnpm preview",
-      "url": ["http://localhost:4321"],
+      "staticDistDir": "./dist",
       "numberOfRuns": 3
     },
     "assert": {
