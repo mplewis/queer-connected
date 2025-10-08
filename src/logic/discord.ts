@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import {
   Client,
   GatewayIntentBits,
@@ -8,6 +7,7 @@ import {
 import pino from 'pino';
 import { z } from 'zod';
 import { DISCORD_BOT_TOKEN } from '../config/env';
+import { dayjs } from '../utils/timezone';
 
 const logger = pino({
   transport: {

@@ -1,8 +1,7 @@
-import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import type React from 'react';
 import type { PublicEvent } from '../logic/discord';
-import { dateAsLocal } from '../utils/timezone';
+import { dateAsLocal, dayjs } from '../utils/timezone';
 import { Button } from './Button';
 import { P } from './Typography';
 import './EventCard.css';

@@ -21,3 +21,5 @@ export function nowAsLocal(): dayjs.Dayjs {
 export function dateAsLocal(date: string | Date | dayjs.Dayjs): dayjs.Dayjs {
   return dayjs(date).tz(CALENDAR_TIMEZONE);
 }
+
+export { dayjs };
