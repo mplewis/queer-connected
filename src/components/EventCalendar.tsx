@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import { useAtom } from 'jotai';
 import type React from 'react';
 import type { PublicEvent } from '../logic/discord';
@@ -8,6 +7,7 @@ import {
   DAYS_BEFORE_TODAY,
   selectedDateAtom,
 } from '../store/events';
+import { dateAsLocal, nowAsLocal } from '../utils/timezone';
 import { Button } from './Button';
 import { Stack } from './Stack';
 import './EventCalendar.css';
@@ -25,13 +25,13 @@ export function EventCalendar({ events }: EventCalendarProps): React.JSX.Element
   const [selectedDate, setSelectedDate] = useAtom(selectedDateAtom);
   const [currentMonth, setCurrentMonth] = useAtom(currentMonthAtom);
 
-  const minDate = dayjs().subtract(DAYS_BEFORE_TODAY, 'day').startOf('day');
-  const maxDate = dayjs().add(DAYS_AFTER_TODAY, 'day').endOf('day');
+  const minDate = nowAsLocal().subtract(DAYS_BEFORE_TODAY, 'day').startOf('day');
+  const maxDate = nowAsLocal().add(DAYS_AFTER_TODAY, 'day').endOf('day');
 
-  const eventDates = new Set(events.map((event) => dayjs(event.start).format('YYYY-MM-DD')));
+  const eventDates = new Set(events.map((event) => dateAsLocal(event.start).format('YYYY-MM-DD')));
 
-  const startOfMonth = dayjs(currentMonth).startOf('month');
-  const endOfMonth = dayjs(currentMonth).endOf('month');
+  const startOfMonth = dateAsLocal(currentMonth).startOf('month');
+  const endOfMonth = dateAsLocal(currentMonth).endOf('month');
   const startOfCalendar = startOfMonth.startOf('week');
   const endOfCalendar = endOfMonth.endOf('week');
 
@@ -43,19 +43,19 @@ export function EventCalendar({ events }: EventCalendarProps): React.JSX.Element
   }
 
   const handlePrevMonth = () => {
-    const newMonth = dayjs(currentMonth).subtract(1, 'month');
+    const newMonth = dateAsLocal(currentMonth).subtract(1, 'month');
     if (newMonth.endOf('month').isBefore(minDate)) return;
     setCurrentMonth(newMonth.toDate());
   };
 
   const handleNextMonth = () => {
-    const newMonth = dayjs(currentMonth).add(1, 'month');
+    const newMonth = dateAsLocal(currentMonth).add(1, 'month');
     if (newMonth.startOf('month').isAfter(maxDate)) return;
     setCurrentMonth(newMonth.toDate());
   };
 
   const handleDateClick = (date: Date) => {
-    const dateDay = dayjs(date);
+    const dateDay = dateAsLocal(date);
     if (dateDay.isBefore(minDate) || dateDay.isAfter(maxDate)) return;
 
     if (!dateDay.isSame(currentMonth, 'month')) {
@@ -64,11 +64,11 @@ export function EventCalendar({ events }: EventCalendarProps): React.JSX.Element
     setSelectedDate(date);
   };
 
-  const canGoPrev = dayjs(currentMonth).subtract(1, 'month').endOf('month').isAfter(minDate);
-  const canGoNext = dayjs(currentMonth).add(1, 'month').startOf('month').isBefore(maxDate);
+  const canGoPrev = dateAsLocal(currentMonth).subtract(1, 'month').endOf('month').isAfter(minDate);
+  const canGoNext = dateAsLocal(currentMonth).add(1, 'month').startOf('month').isBefore(maxDate);
 
   const handleTodayClick = () => {
-    const today = new Date();
+    const today = nowAsLocal().toDate();
     setCurrentMonth(today);
     setSelectedDate(today);
   };
@@ -81,7 +81,7 @@ export function EventCalendar({ events }: EventCalendarProps): React.JSX.Element
             ←
           </Button>
           <button type="button" className="event-calendar__month" onClick={handleTodayClick}>
-            {dayjs(currentMonth).format('MMMM YYYY')}
+            {dateAsLocal(currentMonth).format('MMMM YYYY')}
           </button>
           <Button variant="ghost" size="sm" onClick={handleNextMonth} disabled={!canGoNext}>
             →
@@ -98,11 +98,11 @@ export function EventCalendar({ events }: EventCalendarProps): React.JSX.Element
 
         <div className="event-calendar__days">
           {days.map((day) => {
-            const dayKey = dayjs(day).format('YYYY-MM-DD');
-            const dayObj = dayjs(day);
+            const dayKey = dateAsLocal(day).format('YYYY-MM-DD');
+            const dayObj = dateAsLocal(day);
             const isCurrentMonth = dayObj.isSame(currentMonth, 'month');
             const isSelected = dayObj.isSame(selectedDate, 'day');
-            const isToday = dayObj.isSame(dayjs(), 'day');
+            const isToday = dayObj.isSame(nowAsLocal(), 'day');
             const isOutOfRange = dayObj.isBefore(minDate) || dayObj.isAfter(maxDate);
             const hasEvents = eventDates.has(dayKey) && isCurrentMonth && !isOutOfRange;
 

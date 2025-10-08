@@ -1,9 +1,9 @@
-import dayjs from 'dayjs';
 import { useAtomValue } from 'jotai';
 import type React from 'react';
 import { useEffect, useRef } from 'react';
 import type { PublicEvent } from '../logic/discord';
 import { selectedDateAtom } from '../store/events';
+import { dateAsLocal } from '../utils/timezone';
 import { EventCard } from './EventCard';
 import { Stack } from './Stack';
 import { H2 } from './Typography';
@@ -43,11 +43,11 @@ export function EventList({ events }: EventListProps): React.JSX.Element {
   const selectedDate = useAtomValue(selectedDateAtom);
   const listRef = useRef<HTMLDivElement>(null);
   const hasScrolledRef = useRef(false);
-  const selectedDateKey = dayjs(selectedDate).format('YYYY-MM-DD');
+  const selectedDateKey = dateAsLocal(selectedDate).format('YYYY-MM-DD');
 
   const eventsByDate = events.reduce(
     (acc, event) => {
-      const dateKey = dayjs(event.start).format('YYYY-MM-DD');
+      const dateKey = dateAsLocal(event.start).format('YYYY-MM-DD');
       if (!acc[dateKey]) {
         acc[dateKey] = [];
       }
@@ -80,7 +80,7 @@ export function EventList({ events }: EventListProps): React.JSX.Element {
           <div className="event-list__empty">No events scheduled</div>
         ) : (
           sortedDates.map((dateKey) => {
-            const date = dayjs(dateKey);
+            const date = dateAsLocal(dateKey);
 
             return (
               <div key={dateKey} id={`date-${dateKey}`} className="event-list__date-section">

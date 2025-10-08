@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import type React from 'react';
 import type { PublicEvent } from '../logic/discord';
+import { dateAsLocal } from '../utils/timezone';
 import { Button } from './Button';
 import { P } from './Typography';
 import './EventCard.css';
@@ -40,8 +41,8 @@ function gcalLink(event: PublicEvent): string {
  * Display a single Discord event with time, title, location, and description.
  */
 export function EventCard({ event, icsDataUri }: EventCardProps): React.JSX.Element {
-  const startTime = dayjs(event.start).format('h:mm A');
-  const endTime = event.end ? dayjs(event.end).format('h:mm A') : null;
+  const startTime = dateAsLocal(event.start).format('h:mm A');
+  const endTime = event.end ? dateAsLocal(event.end).format('h:mm A') : null;
   const timeRange = endTime ? `${startTime} - ${endTime}` : startTime;
   const mapsUrl = event.location
     ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.location)}`

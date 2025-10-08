@@ -1,19 +1,19 @@
 ---
-import dayjs from 'dayjs';
 import { EventsView } from '../components/EventsView';
 import { DISCORD_GUILD_ID } from '../config/env';
 import Layout from '../layouts/Layout.astro';
 import { getScheduledEventsForGuild, type PublicEvent } from '../logic/discord';
 import { createEventICS } from '../logic/ical';
 import { DAYS_AFTER_TODAY, DAYS_BEFORE_TODAY } from '../store/events';
+import { dateAsLocal, nowAsLocal } from '../utils/timezone';
 
-const startDate = dayjs().subtract(DAYS_BEFORE_TODAY, 'day').startOf('day');
-const endDate = dayjs().add(DAYS_AFTER_TODAY, 'day').endOf('day');
+const startDate = nowAsLocal().subtract(DAYS_BEFORE_TODAY, 'day').startOf('day');
+const endDate = nowAsLocal().add(DAYS_AFTER_TODAY, 'day').endOf('day');
 const allEvents = await getScheduledEventsForGuild(DISCORD_GUILD_ID, {
   untilDate: endDate.toDate(),
 });
 const filteredEvents = allEvents.filter((event) => {
-  const eventDate = dayjs(event.start);
+  const eventDate = dateAsLocal(event.start);
   return eventDate.isAfter(startDate) && eventDate.isBefore(endDate);
 });
 
