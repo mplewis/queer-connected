@@ -1,0 +1,16 @@
+.month-picker {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
+}
+
+.month-picker__label {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #111827;
+}

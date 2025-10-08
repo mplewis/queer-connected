@@ -1,0 +1,15 @@
+---
+import { EventsView } from '../components/EventsView';
+import { DISCORD_GUILD_ID } from '../config/env';
+import Layout from '../layouts/Layout.astro';
+import { getScheduledEventsForGuild } from '../logic/discord';
+
+const events = await getScheduledEventsForGuild(DISCORD_GUILD_ID);
+---
+
+<Layout
+  title="Events"
+  description="Community events calendar - join us for upcoming gatherings and activities"
+>
+  <EventsView events={events} client:load />
+</Layout>

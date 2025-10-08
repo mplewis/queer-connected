@@ -1,0 +1,29 @@
+.event-list {
+  overflow-y: auto;
+  height: 100%;
+  padding: 1rem;
+}
+
+.event-list__empty {
+  text-align: center;
+  color: #9ca3af;
+  padding: 3rem 1rem;
+  font-size: 1.125rem;
+}
+
+.event-list__date-section {
+  padding: 0.5rem 0;
+  transition: background-color 0.2s ease;
+}
+
+.event-list__date-section--selected {
+  background-color: #f3f4f6;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin: -0.5rem 0;
+}
+
+.event-list__date-header {
+  margin-bottom: 1rem;
+  color: #111827;
+}

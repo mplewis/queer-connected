@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import dayjs from 'dayjs';
 import {
   Client,
@@ -8,6 +7,7 @@ import {
 } from 'discord.js';
 import pino from 'pino';
 import { z } from 'zod';
+import { DISCORD_BOT_TOKEN } from '../config/env';
 
 const logger = pino({
   transport: {
@@ -74,17 +74,6 @@ const FREQUENCIES = {
 } as const;
 
 /**
- * Get a required environment variable or throw an error if it's not set.
- */
-function mustEnv(key: string): string {
-  const value = process.env[key];
-  if (!value) {
-    throw new Error(`Missing environment variable: ${key}`);
-  }
-  return value;
-}
-
-/**
  * Convert a Discord recurrence rule to a generator of future dates.
  * Simple implementation that handles interval/frequency but does not properly handle `by_weekday`, `by_n_weekday`, etc.
  * Only yield dates in the future, skipping any dates before the current time.
@@ -117,7 +106,7 @@ async function login() {
         logger.info({ user: client.user?.tag }, 'Logged in to Discord');
         resolve(client);
       });
-      client.login(mustEnv('DISCORD_BOT_TOKEN'));
+      client.login(DISCORD_BOT_TOKEN);
     } catch (error) {
       reject(error as Error);
     }

@@ -1,0 +1,26 @@
+.events-view {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  min-height: calc(100vh - 200px);
+}
+
+.events-view__layout {
+  align-items: flex-start;
+}
+
+.events-view__calendar {
+  flex: 0 0 33.333%;
+  position: sticky;
+  top: 2rem;
+}
+
+.events-view__list-container {
+  flex: 1;
+  min-width: 0;
+}
+
+@media (max-width: 768px) {
+  .events-view__list-container {
+    width: 100%;
+  }
+}
