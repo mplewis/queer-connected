@@ -31,6 +31,9 @@
   margin: 0;
 }
 
-.event-card__download {
+.event-card__actions {
+  display: flex;
+  gap: 0.5rem;
   margin-top: 1rem;
+  flex-wrap: wrap;
 }

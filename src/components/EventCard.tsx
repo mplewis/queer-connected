@@ -17,6 +17,9 @@ export function EventCard({ event, icsDataUri }: EventCardProps): React.JSX.Elem
   const startTime = dayjs(event.start).format('h:mm A');
   const endTime = event.end ? dayjs(event.end).format('h:mm A') : null;
   const timeRange = endTime ? `${startTime} - ${endTime}` : startTime;
+  const mapsUrl = event.location
+    ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.location)}`
+    : undefined;
 
   return (
     <div className="event-card">
@@ -24,18 +27,31 @@ export function EventCard({ event, icsDataUri }: EventCardProps): React.JSX.Elem
       <div className="event-card__title">{event.name}</div>
       {event.location && <div className="event-card__location">📍 {event.location}</div>}
       {event.desc && <P className="event-card__description">{event.desc}</P>}
-      {icsDataUri && (
-        <Button
-          variant="ghost"
-          size="sm"
-          iconPrefix="📅"
-          href={icsDataUri}
-          download={`${event.name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.ics`}
-          className="event-card__download"
-        >
-          Add to Apple Calendar
-        </Button>
-      )}
+      <div className="event-card__actions">
+        {mapsUrl && (
+          <Button
+            variant="ghost"
+            size="sm"
+            iconPrefix="🗺️"
+            href={mapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Get Directions
+          </Button>
+        )}
+        {icsDataUri && (
+          <Button
+            variant="ghost"
+            size="sm"
+            iconPrefix="📅"
+            href={icsDataUri}
+            download={`${event.name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.ics`}
+          >
+            Add to Apple Calendar
+          </Button>
+        )}
+      </div>
     </div>
   );
 }
