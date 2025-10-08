@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Provider, useAtomValue } from 'jotai';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import type { DiscordEvent } from '../logic/discord';
 import { DAYS_AFTER_TODAY, DAYS_BEFORE_TODAY, selectedDateAtom } from '../store/events';
 import { EventCalendar } from './EventCalendar';
@@ -141,6 +141,69 @@ it('jumps to today when clicking month header', async () => {
   const selectedDate = new Date(screen.getByTestId('selected-date').textContent || '');
   expect(selectedDate.getDate()).toBe(today.getDate());
   expect(selectedDate.getMonth()).toBe(today.getMonth());
+});
+
+describe('DST handling', () => {
+  it('handles November 2025 DST transition without duplicates', async () => {
+    vi.setSystemTime(new Date('2025-10-15T12:00:00Z'));
+    const user = userEvent.setup();
+
+    render(
+      <Provider>
+        <EventCalendar events={[]} />
+      </Provider>
+    );
+
+    const nextButton = screen.getByRole('button', { name: '→' });
+    await user.click(nextButton);
+
+    const dayButtons = screen.getAllByRole('button').filter((btn) => {
+      const text = btn.textContent;
+      return (
+        text && /^\d+$/.test(text) && !btn.classList.contains('event-calendar__day--other-month')
+      );
+    });
+
+    const dayNumbers = dayButtons.map((btn) => Number.parseInt(btn.textContent || '0', 10));
+    const uniqueDays = new Set(dayNumbers);
+
+    expect(dayNumbers.length).toBe(30);
+    expect(uniqueDays.size).toBe(30);
+    for (let i = 1; i <= 30; i++) {
+      expect(uniqueDays.has(i)).toBe(true);
+    }
+
+    vi.useRealTimers();
+  });
+
+  it('handles March 2025 DST transition correctly (spring forward)', () => {
+    vi.setSystemTime(new Date('2025-03-15T12:00:00Z'));
+
+    const { unmount } = render(
+      <Provider>
+        <EventCalendar events={[]} />
+      </Provider>
+    );
+
+    const dayButtons = screen.getAllByRole('button').filter((btn) => {
+      const text = btn.textContent;
+      return (
+        text && /^\d+$/.test(text) && !btn.classList.contains('event-calendar__day--other-month')
+      );
+    });
+
+    const dayNumbers = dayButtons.map((btn) => Number.parseInt(btn.textContent || '0', 10));
+    const uniqueDays = new Set(dayNumbers);
+
+    expect(dayNumbers.length).toBe(31);
+    expect(uniqueDays.size).toBe(31);
+    for (let i = 1; i <= 31; i++) {
+      expect(uniqueDays.has(i)).toBe(true);
+    }
+
+    unmount();
+    vi.useRealTimers();
+  });
 });
 
 describe('date range constraints', () => {

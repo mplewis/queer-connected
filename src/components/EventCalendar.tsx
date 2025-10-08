@@ -7,6 +7,7 @@ import {
   DAYS_BEFORE_TODAY,
   selectedDateAtom,
 } from '../store/events';
+import { getCalendarGridForMonth } from '../utils/calendar';
 import { dateAsLocal, nowAsLocal } from '../utils/timezone';
 import { Button } from './Button';
 import { Stack } from './Stack';
@@ -30,17 +31,11 @@ export function EventCalendar({ events }: EventCalendarProps): React.JSX.Element
 
   const eventDates = new Set(events.map((event) => dateAsLocal(event.start).format('YYYY-MM-DD')));
 
-  const startOfMonth = dateAsLocal(currentMonth).startOf('month');
-  const endOfMonth = dateAsLocal(currentMonth).endOf('month');
-  const startOfCalendar = startOfMonth.startOf('week');
-  const endOfCalendar = endOfMonth.endOf('week');
+  const currentMonthDate = dateAsLocal(currentMonth);
+  const year = currentMonthDate.year();
+  const month = currentMonthDate.month() + 1;
 
-  const days: Date[] = [];
-  let currentDay = startOfCalendar;
-  while (currentDay.isBefore(endOfCalendar) || currentDay.isSame(endOfCalendar, 'day')) {
-    days.push(currentDay.toDate());
-    currentDay = currentDay.add(1, 'day');
-  }
+  const calendarDays = getCalendarGridForMonth(year, month);
 
   const handlePrevMonth = () => {
     const newMonth = dateAsLocal(currentMonth).subtract(1, 'month');
@@ -97,11 +92,12 @@ export function EventCalendar({ events }: EventCalendarProps): React.JSX.Element
         </div>
 
         <div className="event-calendar__days">
-          {days.map((day, index) => {
-            const dayKey = `${index}-${dateAsLocal(day).format('YYYY-MM-DD')}`;
-            const dayObj = dateAsLocal(day);
+          {calendarDays.map((calDay, index) => {
+            const date = new Date(calDay.year, calDay.month - 1, calDay.day);
+            const dayKey = `${index}-${calDay.year}-${calDay.month}-${calDay.day}`;
+            const dayObj = dateAsLocal(date);
             const dayDateKey = dayObj.format('YYYY-MM-DD');
-            const isCurrentMonth = dayObj.isSame(currentMonth, 'month');
+            const isCurrentMonth = calDay.inMonth;
             const isSelected = dayObj.isSame(selectedDate, 'day');
             const isToday = dayObj.isSame(nowAsLocal(), 'day');
             const isOutOfRange = dayObj.isBefore(minDate) || dayObj.isAfter(maxDate);
@@ -111,11 +107,11 @@ export function EventCalendar({ events }: EventCalendarProps): React.JSX.Element
               <button
                 type="button"
                 key={dayKey}
-                onClick={() => handleDateClick(day)}
+                onClick={() => handleDateClick(date)}
                 disabled={isOutOfRange}
                 className={`event-calendar__day ${!isCurrentMonth ? 'event-calendar__day--other-month' : ''} ${isSelected ? 'event-calendar__day--selected' : ''} ${isToday ? 'event-calendar__day--today' : ''} ${hasEvents ? 'event-calendar__day--has-events' : ''}`}
               >
-                {dayObj.format('D')}
+                {calDay.day}
               </button>
             );
           })}
