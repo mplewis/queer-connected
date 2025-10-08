@@ -97,14 +97,15 @@ export function EventCalendar({ events }: EventCalendarProps): React.JSX.Element
         </div>
 
         <div className="event-calendar__days">
-          {days.map((day) => {
-            const dayKey = dateAsLocal(day).format('YYYY-MM-DD');
+          {days.map((day, index) => {
+            const dayKey = `${index}-${dateAsLocal(day).format('YYYY-MM-DD')}`;
             const dayObj = dateAsLocal(day);
+            const dayDateKey = dayObj.format('YYYY-MM-DD');
             const isCurrentMonth = dayObj.isSame(currentMonth, 'month');
             const isSelected = dayObj.isSame(selectedDate, 'day');
             const isToday = dayObj.isSame(nowAsLocal(), 'day');
             const isOutOfRange = dayObj.isBefore(minDate) || dayObj.isAfter(maxDate);
-            const hasEvents = eventDates.has(dayKey) && isCurrentMonth && !isOutOfRange;
+            const hasEvents = eventDates.has(dayDateKey) && isCurrentMonth && !isOutOfRange;
 
             return (
               <button
