@@ -13,14 +13,6 @@
 
 .event-list__date-section {
   padding: 0.5rem 0;
-  transition: background-color 0.2s ease;
-}
-
-.event-list__date-section--selected {
-  background-color: #f3f4f6;
-  border-radius: 0.5rem;
-  padding: 1rem;
-  margin: -0.5rem 0;
 }
 
 .event-list__date-header {

@@ -14,8 +14,30 @@ export interface EventListProps {
 }
 
 /**
+ * Find the target date to scroll to: the selected date if it has events,
+ * otherwise the next date with events, or the last date if selected date is after all events.
+ */
+function findTargetDate(
+  selectedKey: string,
+  dates: string[],
+  eventsMap: Record<string, DiscordEvent[]>
+): string | null {
+  if (eventsMap[selectedKey]) return selectedKey;
+
+  const nextDate = dates.find((date) => date >= selectedKey);
+  if (nextDate) return nextDate;
+
+  if (dates.length > 0) {
+    const lastDate = dates[dates.length - 1];
+    if (lastDate) return lastDate;
+  }
+
+  return null;
+}
+
+/**
  * Display a scrollable list of events, filtered by the selected date.
- * Auto-scrolls to the selected date when it changes.
+ * Auto-scrolls to the selected date when it changes, or to the next event if no events on that date.
  */
 export function EventList({ events }: EventListProps): React.JSX.Element {
   const selectedDate = useAtomValue(selectedDateAtom);
@@ -37,11 +59,12 @@ export function EventList({ events }: EventListProps): React.JSX.Element {
   const sortedDates = Object.keys(eventsByDate).sort();
 
   useEffect(() => {
-    const element = document.getElementById(`date-${selectedDateKey}`);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const targetDateKey = findTargetDate(selectedDateKey, sortedDates, eventsByDate);
+    if (targetDateKey) {
+      const element = document.getElementById(`date-${targetDateKey}`);
+      element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-  }, [selectedDateKey]);
+  }, [selectedDateKey, eventsByDate, sortedDates]);
 
   return (
     <div className="event-list" ref={listRef}>
@@ -51,14 +74,9 @@ export function EventList({ events }: EventListProps): React.JSX.Element {
         ) : (
           sortedDates.map((dateKey) => {
             const date = dayjs(dateKey);
-            const isSelected = dateKey === selectedDateKey;
 
             return (
-              <div
-                key={dateKey}
-                id={`date-${dateKey}`}
-                className={`event-list__date-section ${isSelected ? 'event-list__date-section--selected' : ''}`}
-              >
+              <div key={dateKey} id={`date-${dateKey}`} className="event-list__date-section">
                 <H2 className="event-list__date-header">{date.format('dddd, MMMM D, YYYY')}</H2>
                 <Stack gap="md">
                   {eventsByDate[dateKey]?.map((event) => (
