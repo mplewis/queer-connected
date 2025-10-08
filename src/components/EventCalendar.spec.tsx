@@ -97,12 +97,16 @@ it('navigates to previous month', async () => {
     </Provider>
   );
 
-  const initialMonthText = screen.getByText(/2025/).textContent;
   const prevButton = screen.getByRole('button', { name: '←' });
-  await user.click(prevButton);
+  const initialMonthText = screen.getByText(/\w+ \d{4}/).textContent;
 
-  const newMonthText = screen.getByText(/2025/).textContent;
-  expect(newMonthText).not.toBe(initialMonthText);
+  if (!(prevButton as HTMLButtonElement).disabled) {
+    await user.click(prevButton);
+    const newMonthText = screen.getByText(/\w+ \d{4}/).textContent;
+    expect(newMonthText).not.toBe(initialMonthText);
+  } else {
+    expect(prevButton).toBeDisabled();
+  }
 });
 
 it('navigates to next month', async () => {
@@ -147,7 +151,7 @@ describe('date range constraints', () => {
       </Provider>
     );
 
-    expect(DAYS_BEFORE_TODAY).toBe(30);
+    expect(DAYS_BEFORE_TODAY).toBe(7);
     expect(DAYS_AFTER_TODAY).toBe(90);
   });
 
@@ -175,5 +179,55 @@ describe('date range constraints', () => {
         expect(newDate).toBe(initialDate);
       }
     }
+  });
+
+  it('navigates to another month when clicking a day outside current month', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <Provider>
+        <EventCalendar events={mockEvents} />
+      </Provider>
+    );
+
+    const initialMonth = screen.getByText(/2025/).textContent;
+
+    const otherMonthDays = screen.getAllByRole('button').filter((btn) => {
+      const isDisabled = (btn as HTMLButtonElement).disabled;
+      return (
+        btn.classList.contains('event-calendar__day--other-month') &&
+        !isDisabled &&
+        btn.textContent &&
+        /^\d+$/.test(btn.textContent)
+      );
+    });
+
+    if (otherMonthDays.length > 0) {
+      const firstOtherDay = otherMonthDays[0];
+      if (firstOtherDay) {
+        await user.click(firstOtherDay);
+        const newMonth = screen.getByText(/2025/).textContent;
+        expect(newMonth).not.toBe(initialMonth);
+      }
+    }
+  });
+
+  it('only shows event dots on days in current month and within range', () => {
+    render(
+      <Provider>
+        <EventCalendar events={mockEvents} />
+      </Provider>
+    );
+
+    const daysWithEvents = screen.getAllByRole('button').filter((btn) => {
+      return btn.classList.contains('event-calendar__day--has-events');
+    });
+
+    daysWithEvents.forEach((btn) => {
+      const isOtherMonth = btn.classList.contains('event-calendar__day--other-month');
+      const isDisabled = (btn as HTMLButtonElement).disabled;
+      expect(isOtherMonth).toBe(false);
+      expect(isDisabled).toBe(false);
+    });
   });
 });

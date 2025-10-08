@@ -79,8 +79,8 @@
   color: white;
 }
 
-.event-calendar__day--selected:hover {
-  background: #7c3aed;
+.event-calendar__day--selected:hover:not(:disabled) {
+  background: #9d6ff7;
 }
 
 .event-calendar__day--today {

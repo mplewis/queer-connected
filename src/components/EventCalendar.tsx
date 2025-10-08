@@ -57,6 +57,10 @@ export function EventCalendar({ events }: EventCalendarProps): React.JSX.Element
   const handleDateClick = (date: Date) => {
     const dateDay = dayjs(date);
     if (dateDay.isBefore(minDate) || dateDay.isAfter(maxDate)) return;
+
+    if (!dateDay.isSame(currentMonth, 'month')) {
+      setCurrentMonth(date);
+    }
     setSelectedDate(date);
   };
 
@@ -99,8 +103,8 @@ export function EventCalendar({ events }: EventCalendarProps): React.JSX.Element
             const isCurrentMonth = dayObj.isSame(currentMonth, 'month');
             const isSelected = dayObj.isSame(selectedDate, 'day');
             const isToday = dayObj.isSame(dayjs(), 'day');
-            const hasEvents = eventDates.has(dayKey);
             const isOutOfRange = dayObj.isBefore(minDate) || dayObj.isAfter(maxDate);
+            const hasEvents = eventDates.has(dayKey) && isCurrentMonth && !isOutOfRange;
 
             return (
               <button
