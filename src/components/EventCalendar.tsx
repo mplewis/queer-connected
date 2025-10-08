@@ -14,6 +14,7 @@ export interface EventCalendarProps {
 /**
  * Monthly calendar component with day selection and event highlighting.
  * Shows a Sun-Sat layout with prev/next month navigation.
+ * Click month/year header to jump to today.
  */
 export function EventCalendar({ events }: EventCalendarProps): React.JSX.Element {
   const [selectedDate, setSelectedDate] = useAtom(selectedDateAtom);
@@ -45,6 +46,12 @@ export function EventCalendar({ events }: EventCalendarProps): React.JSX.Element
     setSelectedDate(date);
   };
 
+  const handleTodayClick = () => {
+    const today = new Date();
+    setCurrentMonth(today);
+    setSelectedDate(today);
+  };
+
   return (
     <div className="event-calendar">
       <Stack gap="md">
@@ -52,7 +59,9 @@ export function EventCalendar({ events }: EventCalendarProps): React.JSX.Element
           <Button variant="ghost" size="sm" onClick={handlePrevMonth}>
             ←
           </Button>
-          <h2 className="event-calendar__month">{dayjs(currentMonth).format('MMMM YYYY')}</h2>
+          <button type="button" className="event-calendar__month" onClick={handleTodayClick}>
+            {dayjs(currentMonth).format('MMMM YYYY')}
+          </button>
           <Button variant="ghost" size="sm" onClick={handleNextMonth}>
             →
           </Button>

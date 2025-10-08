@@ -28,7 +28,7 @@ export function EventsView({ events }: EventsViewProps): React.JSX.Element {
 
           <div className="events-view__list-container">
             <Responsive show="mobile">
-              <MonthPicker />
+              <MonthPicker events={events} />
             </Responsive>
             <EventList events={events} />
           </div>
