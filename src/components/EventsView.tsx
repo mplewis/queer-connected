@@ -4,7 +4,6 @@ import type { DiscordEvent } from '../logic/discord';
 import { Container } from './Container';
 import { EventCalendar } from './EventCalendar';
 import { EventList } from './EventList';
-import { MonthPicker } from './MonthPicker';
 import { Responsive } from './Responsive';
 import { Stack } from './Stack';
 import './EventsView.css';
@@ -14,7 +13,7 @@ export interface EventsViewProps {
 }
 
 /**
- * Main events view component that combines calendar, month picker, and event list.
+ * Main events view component that combines calendar and event list.
  * Responsive layout: 1/3 calendar + 2/3 list on desktop, stacked on mobile.
  */
 export function EventsView({ events }: EventsViewProps): React.JSX.Element {
@@ -26,12 +25,7 @@ export function EventsView({ events }: EventsViewProps): React.JSX.Element {
             <EventCalendar events={events} />
           </Responsive>
 
-          <div className="events-view__list-container">
-            <Responsive show="mobile">
-              <MonthPicker events={events} />
-            </Responsive>
-            <EventList events={events} />
-          </div>
+          <EventList events={events} />
         </Stack>
       </Container>
     </Provider>
