@@ -1,6 +1,6 @@
 import type { GuildScheduledEventRecurrenceRule } from 'discord.js';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { rrToDates } from './discord';
+import { expandRrToDates, rrToDates } from './discord';
 
 function* take<T>(generator: Generator<T, null, void>, count: number): Generator<T, null, void> {
   let i = 0;
@@ -83,6 +83,61 @@ describe('rrToDates', () => {
   it('combines endAt and untilDate, stopping at the earlier date', () => {
     const untilDate = new Date('2025-02-20T00:00:00.000Z');
     expect(Array.from(rrToDates(EVERY_OTHER_SUNDAY_WITH_END, untilDate))).toMatchInlineSnapshot(`
+      [
+        2025-01-19T21:00:00.000Z,
+        2025-02-02T21:00:00.000Z,
+        2025-02-16T21:00:00.000Z,
+      ]
+    `);
+  });
+});
+
+describe('expandRrToDates', () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2025-01-01T00:00:00.000Z'));
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it('expands with recurrences limit', () => {
+    expect(expandRrToDates(EVERY_OTHER_SUNDAY, { recurrences: 3 })).toMatchInlineSnapshot(`
+      [
+        2025-01-19T21:00:00.000Z,
+        2025-02-02T21:00:00.000Z,
+        2025-02-16T21:00:00.000Z,
+      ]
+    `);
+  });
+
+  it('expands with untilDate limit', () => {
+    const untilDate = new Date('2025-02-10T00:00:00.000Z');
+    expect(expandRrToDates(EVERY_OTHER_SUNDAY, { untilDate })).toMatchInlineSnapshot(`
+      [
+        2025-01-19T21:00:00.000Z,
+        2025-02-02T21:00:00.000Z,
+      ]
+    `);
+  });
+
+  it('respects endAt in recurrence rule', () => {
+    expect(
+      expandRrToDates(EVERY_OTHER_SUNDAY_WITH_END, { recurrences: 10 })
+    ).toMatchInlineSnapshot(`
+      [
+        2025-01-19T21:00:00.000Z,
+        2025-02-02T21:00:00.000Z,
+        2025-02-16T21:00:00.000Z,
+        2025-03-02T21:00:00.000Z,
+      ]
+    `);
+  });
+
+  it('combines untilDate with endAt, stopping at earlier date', () => {
+    const untilDate = new Date('2025-02-20T00:00:00.000Z');
+    expect(expandRrToDates(EVERY_OTHER_SUNDAY_WITH_END, { untilDate })).toMatchInlineSnapshot(`
       [
         2025-01-19T21:00:00.000Z,
         2025-02-02T21:00:00.000Z,

@@ -35,6 +35,11 @@ export type DiscordEvent = {
 /** Public event type without sensitive guild information. */
 export type PublicEvent = Omit<DiscordEvent, 'guildID'>;
 
+/**
+ * Options for controlling how recurring events are expanded.
+ */
+export type RecurrenceExpandOptions = { recurrences: number } | { untilDate: Date };
+
 /** Zod schema for validating Discord recurrence rule objects. */
 const recurrenceRuleSchema = z.object({
   startTimestamp: z.number(),
@@ -72,6 +77,19 @@ const FREQUENCIES = {
   2: 'week',
   3: 'day',
 } as const;
+
+/**
+ * Take the first N items from a generator.
+ */
+function* take<T>(generator: Generator<T, null, void>, count: number): Generator<T, null, void> {
+  let i = 0;
+  for (const item of generator) {
+    if (i >= count) break;
+    yield item;
+    i++;
+  }
+  return null;
+}
 
 /**
  * Convert a Discord recurrence rule to a generator of future dates.
@@ -117,9 +135,22 @@ async function login() {
 }
 
 /**
- * Options for controlling how recurring events are expanded.
+ * Expand a recurrence rule into an array of dates based on the provided options.
+ * Either limits by count (recurrences) or by date (untilDate).
  */
-export type RecurrenceExpandOptions = { recurrences: number } | { untilDate: Date };
+export function expandRrToDates(
+  rr: Pick<GuildScheduledEventRecurrenceRule, 'startAt' | 'endAt' | 'frequency' | 'interval'>,
+  options: RecurrenceExpandOptions
+): Date[] {
+  if ('recurrences' in options) {
+    return Array.from(take(rrToDates(rr), options.recurrences));
+  }
+  const dates: Date[] = [];
+  for (const date of rrToDates(rr, options.untilDate)) {
+    dates.push(date);
+  }
+  return dates;
+}
 
 /**
  * Fetch all scheduled events from a Discord guild, expand recurring events into individual occurrences,
@@ -157,11 +188,7 @@ async function getScheduledEvents(
     const duration =
       event.scheduledEndAt && dayjs(event.scheduledEndAt).diff(dayjs(event.scheduledStartAt));
 
-    const iter =
-      'recurrences' in options
-        ? rrToDates(rr).take(options.recurrences)
-        : rrToDates(rr, options.untilDate);
-    return Array.from(iter).map((start) => ({
+    return expandRrToDates(rr, options).map((start) => ({
       ...event,
       scheduledStartAt: start,
       scheduledEndAt: duration ? dayjs(start).add(duration).toDate() : undefined,
