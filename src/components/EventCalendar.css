@@ -61,8 +61,13 @@
   position: relative;
 }
 
-.event-calendar__day:hover {
+.event-calendar__day:hover:not(:disabled) {
   background: #f3f4f6;
+}
+
+.event-calendar__day:disabled {
+  cursor: not-allowed;
+  opacity: 0.3;
 }
 
 .event-calendar__day--other-month {

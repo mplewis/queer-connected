@@ -1,11 +1,21 @@
 ---
+import dayjs from 'dayjs';
 import { EventsView } from '../components/EventsView';
 import { DISCORD_GUILD_ID } from '../config/env';
 import Layout from '../layouts/Layout.astro';
 import { getScheduledEventsForGuild, type PublicEvent } from '../logic/discord';
+import { DAYS_AFTER_TODAY, DAYS_BEFORE_TODAY } from '../store/events';
 
-const allEvents = await getScheduledEventsForGuild(DISCORD_GUILD_ID, { recurrences: 10 }); // FIXME: use 30 before, 90 after
-const events: PublicEvent[] = allEvents.map(({ guildID, ...rest }) => rest);
+const startDate = dayjs().subtract(DAYS_BEFORE_TODAY, 'day').startOf('day');
+const endDate = dayjs().add(DAYS_AFTER_TODAY, 'day').endOf('day');
+const allEvents = await getScheduledEventsForGuild(DISCORD_GUILD_ID, {
+  untilDate: endDate.toDate(),
+});
+const filteredEvents = allEvents.filter((event) => {
+  const eventDate = dayjs(event.start);
+  return eventDate.isAfter(startDate) && eventDate.isBefore(endDate);
+});
+const events: PublicEvent[] = filteredEvents.map(({ guildID, ...rest }) => rest);
 ---
 
 <Layout

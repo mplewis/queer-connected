@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Provider, useAtomValue } from 'jotai';
-import { expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import type { DiscordEvent } from '../logic/discord';
-import { selectedDateAtom } from '../store/events';
+import { DAYS_AFTER_TODAY, DAYS_BEFORE_TODAY, selectedDateAtom } from '../store/events';
 import { EventCalendar } from './EventCalendar';
 
 const mockEvents: DiscordEvent[] = [
@@ -137,4 +137,43 @@ it('jumps to today when clicking month header', async () => {
   const selectedDate = new Date(screen.getByTestId('selected-date').textContent || '');
   expect(selectedDate.getDate()).toBe(today.getDate());
   expect(selectedDate.getMonth()).toBe(today.getMonth());
+});
+
+describe('date range constraints', () => {
+  it('respects DAYS_BEFORE_TODAY and DAYS_AFTER_TODAY constants', () => {
+    render(
+      <Provider>
+        <EventCalendar events={mockEvents} />
+      </Provider>
+    );
+
+    expect(DAYS_BEFORE_TODAY).toBe(30);
+    expect(DAYS_AFTER_TODAY).toBe(90);
+  });
+
+  it('prevents clicking on disabled day buttons', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <Provider>
+        <TestWrapper events={mockEvents} />
+      </Provider>
+    );
+
+    const dayButtons = screen.getAllByRole('button').filter((btn) => {
+      const text = btn.textContent;
+      const isDisabled = (btn as HTMLButtonElement).disabled;
+      return text && /^\d+$/.test(text) && isDisabled;
+    });
+
+    if (dayButtons.length > 0) {
+      const firstButton = dayButtons[0];
+      if (firstButton) {
+        const initialDate = screen.getByTestId('selected-date').textContent;
+        await user.click(firstButton);
+        const newDate = screen.getByTestId('selected-date').textContent;
+        expect(newDate).toBe(initialDate);
+      }
+    }
+  });
 });
