@@ -31,7 +31,7 @@ export function EventCard({ event, icsDataUri }: EventCardProps): React.JSX.Elem
   return (
     <div className="event-card">
       <div className="event-card__time">{timeRange}</div>
-      <h3 className="event-card__title">{event.name}</h3>
+      <div className="event-card__title">{event.name}</div>
       {event.location && <div className="event-card__location">📍 {event.location}</div>}
       {event.desc && <P className="event-card__description">{event.desc}</P>}
       {icsDataUri && (
