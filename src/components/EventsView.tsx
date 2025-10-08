@@ -27,14 +27,7 @@ export function EventsView({ events }: EventsViewProps): React.JSX.Element {
               <EventCalendar events={events} />
             </Responsive>
             <div className="events-view__subscribe">
-              <Button
-                variant="ghost"
-                size="sm"
-                iconPrefix="🗓️"
-                onClick={() => {
-                  window.location.href = '/events.ics';
-                }}
-              >
+              <Button variant="ghost" size="sm" iconPrefix="📅" href="/events.ics">
                 Subscribe to Apple Calendar
               </Button>
             </div>

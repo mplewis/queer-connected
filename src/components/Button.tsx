@@ -1,7 +1,7 @@
 import { cva } from 'class-variance-authority';
 import { clsx } from 'clsx';
 import type React from 'react';
-import type { ButtonHTMLAttributes } from 'react';
+import type { AnchorHTMLAttributes, ButtonHTMLAttributes } from 'react';
 import './Button.css';
 
 const buttonVariants = cva('button', {
@@ -26,13 +26,29 @@ const buttonVariants = cva('button', {
   },
 });
 
-export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
+type BaseButtonProps = {
   variant?: 'primary' | 'secondary' | 'ghost';
   size?: 'sm' | 'md' | 'lg';
   iconPrefix?: string;
   children?: React.ReactNode;
-}
+};
 
+type ButtonAsButton = BaseButtonProps &
+  Omit<ButtonHTMLAttributes<HTMLButtonElement>, keyof BaseButtonProps> & {
+    href?: never;
+  };
+
+type ButtonAsLink = BaseButtonProps &
+  Omit<AnchorHTMLAttributes<HTMLAnchorElement>, keyof BaseButtonProps> & {
+    href: string;
+  };
+
+export type ButtonProps = ButtonAsButton | ButtonAsLink;
+
+/**
+ * A versatile button component that can render as either a button or link element.
+ * When href is provided, renders as an anchor tag styled as a button.
+ */
 export function Button({
   className,
   variant,
@@ -41,13 +57,25 @@ export function Button({
   children,
   ...props
 }: ButtonProps): React.JSX.Element {
-  return (
-    <button
-      className={clsx(buttonVariants({ variant, size, iconPrefix: !!iconPrefix }), className)}
-      {...props}
-    >
+  const classes = clsx(buttonVariants({ variant, size, iconPrefix: !!iconPrefix }), className);
+  const content = (
+    <>
       {iconPrefix && <span className="button__icon-prefix">{iconPrefix}</span>}
       {children}
+    </>
+  );
+
+  if ('href' in props && props.href) {
+    return (
+      <a className={classes} {...props}>
+        {content}
+      </a>
+    );
+  }
+
+  return (
+    <button className={classes} {...(props as ButtonHTMLAttributes<HTMLButtonElement>)}>
+      {content}
     </button>
   );
 }

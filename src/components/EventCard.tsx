@@ -18,16 +18,6 @@ export function EventCard({ event, icsDataUri }: EventCardProps): React.JSX.Elem
   const endTime = event.end ? dayjs(event.end).format('h:mm A') : null;
   const timeRange = endTime ? `${startTime} - ${endTime}` : startTime;
 
-  const handleDownload = () => {
-    if (!icsDataUri) return;
-    const link = document.createElement('a');
-    link.href = icsDataUri;
-    link.download = `${event.name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.ics`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-
   return (
     <div className="event-card">
       <div className="event-card__time">{timeRange}</div>
@@ -39,7 +29,8 @@ export function EventCard({ event, icsDataUri }: EventCardProps): React.JSX.Elem
           variant="ghost"
           size="sm"
           iconPrefix="📅"
-          onClick={handleDownload}
+          href={icsDataUri}
+          download={`${event.name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.ics`}
           className="event-card__download"
         >
           Add to Apple Calendar

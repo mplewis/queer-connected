@@ -78,4 +78,46 @@ describe('Button', () => {
     const button = screen.getByRole('button');
     expect(button).toBeDisabled();
   });
+
+  it('renders as link when href is provided', () => {
+    render(<Button href="https://example.com">Link Button</Button>);
+    const link = screen.getByRole('link', { name: 'Link Button' });
+    expect(link).toBeInTheDocument();
+    expect(link).toHaveAttribute('href', 'https://example.com');
+  });
+
+  it('renders link with button styles', () => {
+    render(
+      <Button href="https://example.com" variant="primary" size="lg">
+        Styled Link
+      </Button>
+    );
+    const link = screen.getByRole('link');
+    expect(link).toHaveClass('button');
+    expect(link).toHaveClass('button--primary');
+    expect(link).toHaveClass('button--lg');
+  });
+
+  it('renders link with icon prefix', () => {
+    render(
+      <Button href="https://example.com" iconPrefix="🔗">
+        Link with Icon
+      </Button>
+    );
+    const link = screen.getByRole('link');
+    expect(link).toHaveTextContent('🔗');
+    expect(link).toHaveTextContent('Link with Icon');
+    expect(link.querySelector('.button__icon-prefix')).toBeInTheDocument();
+  });
+
+  it('passes through anchor props when href is provided', () => {
+    render(
+      <Button href="https://example.com" target="_blank" rel="noopener noreferrer">
+        External Link
+      </Button>
+    );
+    const link = screen.getByRole('link');
+    expect(link).toHaveAttribute('target', '_blank');
+    expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+  });
 });
