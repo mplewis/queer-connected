@@ -1,3 +1,4 @@
+import { Icon } from '@iconify/react';
 import { cva } from 'class-variance-authority';
 import { clsx } from 'clsx';
 import type React from 'react';
@@ -16,7 +17,7 @@ const buttonVariants = cva('button', {
       md: 'button--md',
       lg: 'button--lg',
     },
-    iconPrefix: {
+    prefix: {
       true: 'button--icon-prefix',
     },
   },
@@ -29,7 +30,7 @@ const buttonVariants = cva('button', {
 type BaseButtonProps = {
   variant?: 'primary' | 'secondary' | 'ghost';
   size?: 'sm' | 'md' | 'lg';
-  iconPrefix?: string;
+  prefix?: { icon: string } | { value: string };
   children?: React.ReactNode;
 };
 
@@ -53,14 +54,26 @@ export function Button({
   className,
   variant,
   size,
-  iconPrefix,
+  prefix,
   children,
   ...props
 }: ButtonProps): React.JSX.Element {
-  const classes = clsx(buttonVariants({ variant, size, iconPrefix: !!iconPrefix }), className);
+  const classes = clsx(buttonVariants({ variant, size, prefix: !!prefix }), className);
+  let prefixElem: React.JSX.Element | undefined;
+  if (prefix) {
+    if ('icon' in prefix) {
+      prefixElem = (
+        <span className="button__icon-prefix">
+          <Icon icon={prefix.icon} />
+        </span>
+      );
+    } else if ('value' in prefix) {
+      prefixElem = <span className="button__icon-prefix">{prefix.value}</span>;
+    }
+  }
   const content = (
     <>
-      {iconPrefix && <span className="button__icon-prefix">{iconPrefix}</span>}
+      {prefixElem}
       {children}
     </>
   );

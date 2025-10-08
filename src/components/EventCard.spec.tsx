@@ -24,7 +24,7 @@ it('renders event description', () => {
 
 it('renders event location with emoji', () => {
   render(<EventCard event={mockEvent} />);
-  expect(screen.getByText(/📍 Test Location/)).toBeInTheDocument();
+  expect(screen.getByText(/Test Location/)).toBeInTheDocument();
 });
 
 it('renders time range when end time is provided', () => {

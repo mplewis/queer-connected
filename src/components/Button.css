@@ -54,6 +54,9 @@
 /* Icon prefix */
 .button__icon-prefix {
   margin-right: 0.5rem;
+  display: inline-flex;
+  align-items: baseline;
+  color: #8b5cf6;
 }
 
 /* Sizes */

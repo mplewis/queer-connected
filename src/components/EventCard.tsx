@@ -5,6 +5,7 @@ import type { PublicEvent } from '../logic/discord';
 import { Button } from './Button';
 import { P } from './Typography';
 import './EventCard.css';
+import { Icon } from '@iconify/react';
 
 dayjs.extend(utc);
 
@@ -49,16 +50,24 @@ export function EventCard({ event, icsDataUri }: EventCardProps): React.JSX.Elem
 
   return (
     <div className="event-card">
-      <div className="event-card__time">{timeRange}</div>
       <div className="event-card__title">{event.name}</div>
-      {event.location && <div className="event-card__location">📍 {event.location}</div>}
+      <div className="event-card__time">{timeRange}</div>
+      {event.location && (
+        <div className="event-card__location">
+          <Icon
+            icon="solar:point-on-map-perspective-bold"
+            style={{ verticalAlign: 'middle', marginRight: '0.3rem' }}
+          />
+          {event.location}
+        </div>
+      )}
       {event.desc && <P className="event-card__description">{event.desc}</P>}
       <div className="event-card__actions">
         {mapsUrl && (
           <Button
             variant="ghost"
             size="sm"
-            iconPrefix="🗺️"
+            prefix={{ icon: 'solar:map-arrow-up-bold' }}
             href={mapsUrl}
             target="_blank"
             rel="noopener noreferrer"
@@ -69,7 +78,7 @@ export function EventCard({ event, icsDataUri }: EventCardProps): React.JSX.Elem
         <Button
           variant="ghost"
           size="sm"
-          iconPrefix="📅"
+          prefix={{ icon: 'cib:google' }}
           href={googleCalUrl}
           target="_blank"
           rel="noopener noreferrer"
@@ -80,7 +89,7 @@ export function EventCard({ event, icsDataUri }: EventCardProps): React.JSX.Elem
           <Button
             variant="ghost"
             size="sm"
-            iconPrefix="📅"
+            prefix={{ icon: 'cib:apple' }}
             href={icsDataUri}
             download={`${event.name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.ics`}
           >

@@ -50,7 +50,7 @@ describe('Button', () => {
   });
 
   it('renders with icon prefix', () => {
-    render(<Button iconPrefix="📅">With icon</Button>);
+    render(<Button prefix={{ value: '📅' }}>With icon</Button>);
     const button = screen.getByRole('button');
     expect(button).toHaveTextContent('📅');
     expect(button).toHaveTextContent('With icon');
@@ -58,7 +58,7 @@ describe('Button', () => {
   });
 
   it('renders icon prefix before text', () => {
-    render(<Button iconPrefix="📅">Calendar</Button>);
+    render(<Button prefix={{ value: '📅' }}>Calendar</Button>);
     const button = screen.getByRole('button');
     const iconSpan = button.querySelector('.button__icon-prefix');
     expect(iconSpan).toBeInTheDocument();
@@ -97,18 +97,19 @@ describe('Button', () => {
     expect(link).toHaveClass('button--primary');
     expect(link).toHaveClass('button--lg');
   });
-
-  it('renders link with icon prefix', () => {
+  it('renders link with value prefix', () => {
     render(
-      <Button href="https://example.com" iconPrefix="🔗">
-        Link with Icon
+      <Button href="https://example.com" prefix={{ value: '🔗' }}>
+        Link with Value
       </Button>
     );
     const link = screen.getByRole('link');
     expect(link).toHaveTextContent('🔗');
-    expect(link).toHaveTextContent('Link with Icon');
+    expect(link).toHaveTextContent('Link with Value');
     expect(link.querySelector('.button__icon-prefix')).toBeInTheDocument();
   });
+
+  // TODO: it('renders link with icon prefix', () => {...})
 
   it('passes through anchor props when href is provided', () => {
     render(
