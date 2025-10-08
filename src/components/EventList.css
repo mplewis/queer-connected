@@ -1,7 +1,7 @@
 .event-list {
   overflow-y: auto;
   height: 100%;
-  padding: 1rem;
+  padding: 0 1rem 1rem;
 }
 
 .event-list__empty {
@@ -12,10 +12,17 @@
 }
 
 .event-list__date-section {
-  padding: 0.5rem 0;
+  padding: 0 0 1rem 0;
 }
 
 .event-list__date-header {
   margin-bottom: 1rem;
   color: #111827;
+}
+
+@media (max-width: 768px) {
+  .event-list__date-header {
+    font-size: 1.25rem;
+    margin-top: 0;
+  }
 }

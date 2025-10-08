@@ -35,3 +35,7 @@
   line-height: 1.6;
   margin: 0;
 }
+
+.event-card__download {
+  margin-top: 1rem;
+}

@@ -10,7 +10,7 @@ import { H2 } from './Typography';
 import './EventList.css';
 
 export interface EventListProps {
-  events: PublicEvent[];
+  events: Array<PublicEvent & { icsDataUri?: string }>;
 }
 
 /**
@@ -20,7 +20,7 @@ export interface EventListProps {
 function findTargetDate(
   selectedKey: string,
   dates: string[],
-  eventsMap: Record<string, PublicEvent[]>
+  eventsMap: Record<string, Array<PublicEvent & { icsDataUri?: string }>>
 ): string | null {
   if (eventsMap[selectedKey]) return selectedKey;
 
@@ -53,7 +53,7 @@ export function EventList({ events }: EventListProps): React.JSX.Element {
       acc[dateKey].push(event);
       return acc;
     },
-    {} as Record<string, PublicEvent[]>
+    {} as Record<string, Array<PublicEvent & { icsDataUri?: string }>>
   );
 
   const sortedDates = Object.keys(eventsByDate).sort();
@@ -80,7 +80,11 @@ export function EventList({ events }: EventListProps): React.JSX.Element {
                 <H2 className="event-list__date-header">{date.format('dddd, MMMM D, YYYY')}</H2>
                 <Stack gap="md">
                   {eventsByDate[dateKey]?.map((event) => (
-                    <EventCard key={`${event.name}-${event.start.getTime()}`} event={event} />
+                    <EventCard
+                      key={`${event.name}-${event.start.getTime()}`}
+                      event={event}
+                      {...(event.icsDataUri && { icsDataUri: event.icsDataUri })}
+                    />
                   ))}
                 </Stack>
               </div>

@@ -8,10 +8,27 @@
   align-items: flex-start;
 }
 
-.events-view__calendar {
+.events-view__sidebar {
   flex: 0 0 33.333%;
   position: sticky;
   top: 2rem;
+}
+
+.events-view__subscribe {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .events-view__sidebar {
+    width: 100%;
+    position: static;
+  }
+
+  .events-view__subscribe {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
 }
 
 .events-view__list-container {

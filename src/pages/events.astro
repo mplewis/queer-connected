@@ -4,6 +4,7 @@ import { EventsView } from '../components/EventsView';
 import { DISCORD_GUILD_ID } from '../config/env';
 import Layout from '../layouts/Layout.astro';
 import { getScheduledEventsForGuild, type PublicEvent } from '../logic/discord';
+import { createEventICS } from '../logic/ical';
 import { DAYS_AFTER_TODAY, DAYS_BEFORE_TODAY } from '../store/events';
 
 const startDate = dayjs().subtract(DAYS_BEFORE_TODAY, 'day').startOf('day');
@@ -15,12 +16,18 @@ const filteredEvents = allEvents.filter((event) => {
   const eventDate = dayjs(event.start);
   return eventDate.isAfter(startDate) && eventDate.isBefore(endDate);
 });
-const events: PublicEvent[] = filteredEvents.map(({ guildID, ...rest }) => rest);
+
+const eventsWithICS: Array<PublicEvent & { icsDataUri: string }> = filteredEvents.map((event) => {
+  const { guildID, ...publicEvent } = event;
+  const icsContent = createEventICS(event);
+  const icsDataUri = `data:text/calendar;base64,${Buffer.from(icsContent).toString('base64')}`;
+  return { ...publicEvent, icsDataUri };
+});
 ---
 
 <Layout
   title="Events"
   description="Community events calendar - join us for upcoming gatherings and activities"
 >
-  <EventsView events={events} client:load />
+  <EventsView events={eventsWithICS} client:load />
 </Layout>
