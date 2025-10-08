@@ -4,7 +4,7 @@ import { DISCORD_GUILD_ID } from '../config/env';
 import Layout from '../layouts/Layout.astro';
 import { getScheduledEventsForGuild, type PublicEvent } from '../logic/discord';
 
-const allEvents = await getScheduledEventsForGuild(DISCORD_GUILD_ID);
+const allEvents = await getScheduledEventsForGuild(DISCORD_GUILD_ID, { recurrences: 10 }); // FIXME: use 30 before, 90 after
 const events: PublicEvent[] = allEvents.map(({ guildID, ...rest }) => rest);
 ---
 

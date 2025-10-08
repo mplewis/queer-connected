@@ -18,9 +18,6 @@ const logger = pino({
   },
 });
 
-/** If not specified, expand each recurring event to this many occurrences in the future. */
-const DEFAULT_RECURRENCE_EXPAND_COUNT = 10;
-
 /** Cache all events, once per compilation. */
 let allEvents: DiscordEvent[] | null = null;
 
@@ -82,13 +79,16 @@ const FREQUENCIES = {
  * Only yield dates in the future, skipping any dates before the current time.
  */
 export function* rrToDates(
-  rr: Pick<GuildScheduledEventRecurrenceRule, 'startAt' | 'endAt' | 'frequency' | 'interval'>
+  rr: Pick<GuildScheduledEventRecurrenceRule, 'startAt' | 'endAt' | 'frequency' | 'interval'>,
+  untilDate?: Date
 ): Generator<Date, null, void> {
   let date = dayjs(rr.startAt);
   const end = rr.endAt && dayjs(rr.endAt);
+  const until = untilDate && dayjs(untilDate);
   const freq = FREQUENCIES[rr.frequency];
   while (true) {
     if (end && date.isAfter(end)) break;
+    if (until && date.isAfter(until)) break;
     // Don't yield dates in the past
     if (date.isAfter(dayjs())) yield date.toDate();
     date = date.add(rr.interval, freq);
@@ -117,12 +117,17 @@ async function login() {
 }
 
 /**
+ * Options for controlling how recurring events are expanded.
+ */
+export type RecurrenceExpandOptions = { recurrences: number } | { untilDate: Date };
+
+/**
  * Fetch all scheduled events from a Discord guild, expand recurring events into individual occurrences,
  * and return them as simplified DiscordEvent objects.
  */
 async function getScheduledEvents(
   guild: Guild,
-  recurrenceExpandCount: number
+  options: RecurrenceExpandOptions
 ): Promise<DiscordEvent[]> {
   const events = await guild.scheduledEvents.fetch();
   logger.debug({ eventCount: events.size, guildId: guild.id }, 'Fetched scheduled events');
@@ -152,7 +157,10 @@ async function getScheduledEvents(
     const duration =
       event.scheduledEndAt && dayjs(event.scheduledEndAt).diff(dayjs(event.scheduledStartAt));
 
-    const iter = rrToDates(rr).take(recurrenceExpandCount);
+    const iter =
+      'recurrences' in options
+        ? rrToDates(rr).take(options.recurrences)
+        : rrToDates(rr, options.untilDate);
     return Array.from(iter).map((start) => ({
       ...event,
       scheduledStartAt: start,
@@ -175,7 +183,7 @@ async function getScheduledEvents(
  * Fetch scheduled events from all guilds the bot has access to.
  * Results are cached after the first call.
  */
-async function getScheduledEventsForAllGuilds(recurrenceExpandCount: number) {
+async function getScheduledEventsForAllGuilds(options: RecurrenceExpandOptions) {
   if (allEvents !== null) return allEvents;
 
   const client = await login();
@@ -183,9 +191,7 @@ async function getScheduledEventsForAllGuilds(recurrenceExpandCount: number) {
   const guilds = await Promise.all(guildObjs.map(async (g) => client.guilds.fetch(g.id)));
   logger.info({ guildCount: guilds.length }, 'Found guilds');
 
-  allEvents = (
-    await Promise.all(guilds.map(async (g) => getScheduledEvents(g, recurrenceExpandCount)))
-  ).flat();
+  allEvents = (await Promise.all(guilds.map(async (g) => getScheduledEvents(g, options)))).flat();
   logger.info({ eventCount: allEvents.length }, 'Found events');
   allEvents.sort((a, b) => a.start.getTime() - b.start.getTime());
   return allEvents;
@@ -193,12 +199,12 @@ async function getScheduledEventsForAllGuilds(recurrenceExpandCount: number) {
 
 /**
  * Fetch all scheduled events for a specific Discord guild.
- * Recurring events are expanded into individual occurrences based on recurrenceExpandCount.
+ * Recurring events are expanded based on the provided options.
  */
 export async function getScheduledEventsForGuild(
   guildID: string,
-  recurrenceExpandCount = DEFAULT_RECURRENCE_EXPAND_COUNT
+  options: RecurrenceExpandOptions
 ) {
-  const events = await getScheduledEventsForAllGuilds(recurrenceExpandCount);
+  const events = await getScheduledEventsForAllGuilds(options);
   return events.filter((e) => e.guildID === guildID);
 }

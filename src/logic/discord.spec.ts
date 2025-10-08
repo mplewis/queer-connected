@@ -2,6 +2,16 @@ import type { GuildScheduledEventRecurrenceRule } from 'discord.js';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { rrToDates } from './discord';
 
+function* take<T>(generator: Generator<T, null, void>, count: number): Generator<T, null, void> {
+  let i = 0;
+  for (const item of generator) {
+    if (i >= count) break;
+    yield item;
+    i++;
+  }
+  return null;
+}
+
 const EVERY_OTHER_SUNDAY: GuildScheduledEventRecurrenceRule = {
   get startAt() {
     return new Date(this.startTimestamp);
@@ -40,7 +50,7 @@ describe('rrToDates', () => {
   });
 
   it('converts a recurrence rule to a date generator', () => {
-    expect(Array.from(rrToDates(EVERY_OTHER_SUNDAY).take(5))).toMatchInlineSnapshot(`
+    expect(Array.from(take(rrToDates(EVERY_OTHER_SUNDAY), 5))).toMatchInlineSnapshot(`
       [
         2025-01-19T21:00:00.000Z,
         2025-02-02T21:00:00.000Z,
@@ -50,12 +60,33 @@ describe('rrToDates', () => {
       ]
     `);
 
-    expect(Array.from(rrToDates(EVERY_OTHER_SUNDAY_WITH_END).take(5))).toMatchInlineSnapshot(`
+    expect(Array.from(take(rrToDates(EVERY_OTHER_SUNDAY_WITH_END), 5))).toMatchInlineSnapshot(`
       [
         2025-01-19T21:00:00.000Z,
         2025-02-02T21:00:00.000Z,
         2025-02-16T21:00:00.000Z,
         2025-03-02T21:00:00.000Z,
+      ]
+    `);
+  });
+
+  it('respects untilDate parameter', () => {
+    const untilDate = new Date('2025-02-10T00:00:00.000Z');
+    expect(Array.from(rrToDates(EVERY_OTHER_SUNDAY, untilDate))).toMatchInlineSnapshot(`
+      [
+        2025-01-19T21:00:00.000Z,
+        2025-02-02T21:00:00.000Z,
+      ]
+    `);
+  });
+
+  it('combines endAt and untilDate, stopping at the earlier date', () => {
+    const untilDate = new Date('2025-02-20T00:00:00.000Z');
+    expect(Array.from(rrToDates(EVERY_OTHER_SUNDAY_WITH_END, untilDate))).toMatchInlineSnapshot(`
+      [
+        2025-01-19T21:00:00.000Z,
+        2025-02-02T21:00:00.000Z,
+        2025-02-16T21:00:00.000Z,
       ]
     `);
   });
