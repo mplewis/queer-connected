@@ -1,6 +1,6 @@
 import { Provider } from 'jotai';
 import type React from 'react';
-import type { DiscordEvent } from '../logic/discord';
+import type { PublicEvent } from '../logic/discord';
 import { Container } from './Container';
 import { EventCalendar } from './EventCalendar';
 import { EventList } from './EventList';
@@ -9,7 +9,7 @@ import { Stack } from './Stack';
 import './EventsView.css';
 
 export interface EventsViewProps {
-  events: DiscordEvent[];
+  events: PublicEvent[];
 }
 
 /**

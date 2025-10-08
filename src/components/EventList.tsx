@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import { useAtomValue } from 'jotai';
 import type React from 'react';
 import { useEffect, useRef } from 'react';
-import type { DiscordEvent } from '../logic/discord';
+import type { PublicEvent } from '../logic/discord';
 import { selectedDateAtom } from '../store/events';
 import { EventCard } from './EventCard';
 import { Stack } from './Stack';
@@ -10,7 +10,7 @@ import { H2 } from './Typography';
 import './EventList.css';
 
 export interface EventListProps {
-  events: DiscordEvent[];
+  events: PublicEvent[];
 }
 
 /**
@@ -20,7 +20,7 @@ export interface EventListProps {
 function findTargetDate(
   selectedKey: string,
   dates: string[],
-  eventsMap: Record<string, DiscordEvent[]>
+  eventsMap: Record<string, PublicEvent[]>
 ): string | null {
   if (eventsMap[selectedKey]) return selectedKey;
 
@@ -53,7 +53,7 @@ export function EventList({ events }: EventListProps): React.JSX.Element {
       acc[dateKey].push(event);
       return acc;
     },
-    {} as Record<string, DiscordEvent[]>
+    {} as Record<string, PublicEvent[]>
   );
 
   const sortedDates = Object.keys(eventsByDate).sort();
@@ -80,10 +80,7 @@ export function EventList({ events }: EventListProps): React.JSX.Element {
                 <H2 className="event-list__date-header">{date.format('dddd, MMMM D, YYYY')}</H2>
                 <Stack gap="md">
                   {eventsByDate[dateKey]?.map((event) => (
-                    <EventCard
-                      key={`${event.guildID}-${event.name}-${event.start.getTime()}`}
-                      event={event}
-                    />
+                    <EventCard key={`${event.name}-${event.start.getTime()}`} event={event} />
                   ))}
                 </Stack>
               </div>

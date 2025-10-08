@@ -2,9 +2,10 @@
 import { EventsView } from '../components/EventsView';
 import { DISCORD_GUILD_ID } from '../config/env';
 import Layout from '../layouts/Layout.astro';
-import { getScheduledEventsForGuild } from '../logic/discord';
+import { getScheduledEventsForGuild, type PublicEvent } from '../logic/discord';
 
-const events = await getScheduledEventsForGuild(DISCORD_GUILD_ID);
+const allEvents = await getScheduledEventsForGuild(DISCORD_GUILD_ID);
+const events: PublicEvent[] = allEvents.map(({ guildID, ...rest }) => rest);
 ---
 
 <Layout

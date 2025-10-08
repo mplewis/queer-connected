@@ -1,11 +1,11 @@
 import dayjs from 'dayjs';
 import type React from 'react';
-import type { DiscordEvent } from '../logic/discord';
+import type { PublicEvent } from '../logic/discord';
 import { P } from './Typography';
 import './EventCard.css';
 
 export interface EventCardProps {
-  event: DiscordEvent;
+  event: PublicEvent;
 }
 
 /**

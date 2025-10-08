@@ -1,14 +1,14 @@
 import dayjs from 'dayjs';
 import { useAtom } from 'jotai';
 import type React from 'react';
-import type { DiscordEvent } from '../logic/discord';
+import type { PublicEvent } from '../logic/discord';
 import { currentMonthAtom, selectedDateAtom } from '../store/events';
 import { Button } from './Button';
 import { Stack } from './Stack';
 import './EventCalendar.css';
 
 export interface EventCalendarProps {
-  events: DiscordEvent[];
+  events: PublicEvent[];
 }
 
 /**

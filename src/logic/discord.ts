@@ -35,6 +35,9 @@ export type DiscordEvent = {
   recurrenceRule?: GuildScheduledEventRecurrenceRule;
 };
 
+/** Public event type without sensitive guild information. */
+export type PublicEvent = Omit<DiscordEvent, 'guildID'>;
+
 /** Zod schema for validating Discord recurrence rule objects. */
 const recurrenceRuleSchema = z.object({
   startTimestamp: z.number(),
