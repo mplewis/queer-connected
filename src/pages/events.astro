@@ -1,11 +1,16 @@
 ---
 import { EventsView } from '../components/EventsView';
 import { DISCORD_GUILD_ID } from '../config/env';
+import { featureEnabled } from '../config/features';
 import Layout from '../layouts/Layout.astro';
 import { getScheduledEventsForGuild, type PublicEvent } from '../logic/discord';
 import { createEventICS } from '../logic/ical';
 import { DAYS_AFTER_TODAY, DAYS_BEFORE_TODAY } from '../store/events';
 import { dateAsLocal, nowAsLocal } from '../utils/timezone';
+
+if (!featureEnabled('events')) {
+  return new Response(null, { status: 404 });
+}
 
 const startDate = nowAsLocal().subtract(DAYS_BEFORE_TODAY, 'day').startOf('day');
 const endDate = nowAsLocal().add(DAYS_AFTER_TODAY, 'day').endOf('day');

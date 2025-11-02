@@ -1,4 +1,5 @@
 ---
+import { featureEnabled } from '../config/features';
 import { SITE_NAME } from '../constants';
 import { Container } from './Container';
 ---
@@ -15,7 +16,7 @@ import { Container } from './Container';
       <ul class="navbar__links" id="navbar-menu">
         <li><a href="/">Home</a></li>
         <li><a href="/about">About</a></li>
-        <li><a href="/events">Events</a></li>
+        {featureEnabled('events') && <li><a href="/events">Events</a></li>}
         <li><a href="/resources">Resources</a></li>
         <li><a href="/contact">Contact</a></li>
       </ul>

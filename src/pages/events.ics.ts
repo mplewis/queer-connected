@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { DISCORD_GUILD_ID } from '../config/env';
+import { featureEnabled } from '../config/features';
 import { getScheduledEventsForGuild } from '../logic/discord';
 import { createCalendar } from '../logic/ical';
 import { DAYS_AFTER_TODAY, DAYS_BEFORE_TODAY } from '../store/events';
@@ -10,6 +11,9 @@ import { dateAsLocal, nowAsLocal } from '../utils/timezone';
  * This endpoint can be subscribed to in calendar applications.
  */
 export const GET: APIRoute = async () => {
+  if (!featureEnabled('events')) {
+    return new Response(null, { status: 404 });
+  }
   const startDate = nowAsLocal().subtract(DAYS_BEFORE_TODAY, 'day').startOf('day');
   const endDate = nowAsLocal().add(DAYS_AFTER_TODAY, 'day').endOf('day');
 
