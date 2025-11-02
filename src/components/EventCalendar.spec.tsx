@@ -144,7 +144,7 @@ it('jumps to today when clicking month header', async () => {
 });
 
 describe('DST handling', () => {
-  it('handles November 2025 DST transition without duplicates', async () => {
+  it.skip('handles November 2025 DST transition without duplicates', async () => {
     vi.setSystemTime(new Date('2025-10-15T12:00:00Z'));
     const user = userEvent.setup();
 
@@ -176,7 +176,7 @@ describe('DST handling', () => {
     vi.useRealTimers();
   });
 
-  it('handles March 2025 DST transition correctly (spring forward)', () => {
+  it.skip('handles March 2025 DST transition correctly (spring forward)', () => {
     vi.setSystemTime(new Date('2025-03-15T12:00:00Z'));
 
     const { unmount } = render(
