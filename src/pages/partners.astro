@@ -1,0 +1,33 @@
+---
+import partnersData from '../../data/cmc-members.json';
+import { Container } from '../components/Container';
+import { Grid } from '../components/Grid';
+import { PartnerCard } from '../components/PartnerCard';
+import { Section } from '../components/Section';
+import { H1, P } from '../components/Typography';
+import Layout from '../layouts/Layout.astro';
+import { validatePartners } from '../logic/partners';
+
+const partners = validatePartners(partnersData);
+---
+
+<Layout
+  title="Partners"
+  description="Discover local businesses and organizations offering exclusive discounts to proud.CMC members"
+>
+  <Section spacing="md" paddingY="sm">
+    <Container size="lg">
+      <H1>Network Partners</H1>
+      <P color="muted">
+        Proud.CMC has partnered with local businesses and organizations to bring exclusive benefits to
+        our members. Support these amazing partners and enjoy special discounts!
+      </P>
+      <Section spacing="md">
+      <Grid cols={3} gap="lg" client:load>
+        {partners.map((partner) => (
+          <PartnerCard partner={partner} client:load />
+        ))}
+      </Grid></Section>
+    </Container>
+  </Section>
+</Layout>

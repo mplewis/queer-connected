@@ -1,0 +1,62 @@
+[
+  {
+    "name": "A Better Standard Direction",
+    "location": null,
+    "discount": "44% off (use code: foreverproud) Catalyst Courses",
+    "website": "abetterstandarddirection.com"
+  },
+  {
+    "name": "Be Found Pilates",
+    "location": "324 Main St., Suite H, Longmont, CO 80501",
+    "discount": "15% off private lessons & packages, 10% off group lessons & packages",
+    "website": "befoundpilates.com"
+  },
+  {
+    "name": "Butterscotch Studios",
+    "location": "620 Kimbark St. Longmont, CO 80501",
+    "discount": "$5 off first trial lesson",
+    "website": "butterscotchstudios.com"
+  },
+  {
+    "name": "LovEnZen Apothecary",
+    "location": null,
+    "discount": "20% off online orders (use code: pridefulmember)",
+    "website": "lovenzenwellness.com"
+  },
+  {
+    "name": "Luminous Tea House & Café",
+    "location": "624 Main St., Longmont, CO 80501",
+    "discount": "15% off any purchase",
+    "website": "luminoustea.com"
+  },
+  {
+    "name": "ResoundingWell",
+    "location": null,
+    "discount": "10% off individual sound journey sessions",
+    "website": "resoundingwell.com"
+  },
+  {
+    "name": "Revel Soap Company",
+    "location": "Inside proud.CMC & Retail Therapy",
+    "discount": "20% off all products",
+    "website": null
+  },
+  {
+    "name": "Shield Maiden Tattoo Studio",
+    "location": "940 Kimbark St., Unit 4, Longmont, CO 80501",
+    "discount": "10% off for proud. Members, 15% off for proud Partners, 20% off for employees",
+    "website": "shieldmaidentattoo.com"
+  },
+  {
+    "name": "St.Vrain Cidery",
+    "location": "In Alley, 350 Terry St., #130, Longmont, CO 80501",
+    "discount": "20% off tab",
+    "website": "stvraincidery.com"
+  },
+  {
+    "name": "Summit Tacos",
+    "location": "237 Collyer St., Longmont, CO 80501",
+    "discount": "20% off all food",
+    "website": "eatsummittacos.com"
+  }
+]
